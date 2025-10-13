@@ -1,0 +1,28 @@
+{# django_startr/technical_500.html #}
+{% extends "base.html" %}
+{% load startr_filters %}
+{% block title %}Internal Server Error{% endblock %}
+{% block content %}
+
+<div class="error-container" style="--ta:center; --mt:2em">
+    <h1 style="--c:var(--pink)">Internal Server Error</h1>
+    <p>Something went wrong on our end. Please try again later.</p>
+
+    <p style="--mt:1em">You can try:</p>
+    <ul style="--lis:none; --ta:center; --p:0">
+        <li><a href="javascript:history.back()">Going back to the previous page</a></li>
+        <li><a href="/">Returning to the homepage</a></li>
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<hr />
+<div class="debug-info" style="--d:flex; --fd:column; --jc:center; --ai:center; --br:0.6em; --shadow-inset:10; --mt:0; --z:10">
+    {% include "includes/boomer.html" %}
+    <p style="--ta:center">You're seeing this <a href="https://startr.cloud">Startr</a> 500 page because <code>DEBUG = True</code> in your Django settings.</p>
+    <p style="--m:auto; --size:0.6em">You can customize this message by editing the <code>django_startr technical_500.html</code> template.</p>
+    <p style="--m:auto; --size:0.6em">You can also turn off this page by setting <code>DEBUG = False</code> in your Django settings, but then you'll see the default Django 500 page.</p>
+</div>
+{% endblock %}

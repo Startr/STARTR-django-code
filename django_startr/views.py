@@ -2,7 +2,7 @@
 
 from django.conf import settings
 from django.apps import apps
-from django.http import HttpResponseNotFound, HttpResponseForbidden
+from django.http import HttpResponseNotFound, HttpResponseForbidden, HttpResponseServerError, HttpResponseBadRequest
 from django.urls import get_resolver, URLPattern, URLResolver
 from django.template.loader import render_to_string
 import re
@@ -171,3 +171,29 @@ def debug_permission_denied(request, exception=None):
     # Render our custom technical 403 template
     html = render_to_string("technical_403.html", {}, request=request)
     return HttpResponseForbidden(html)
+
+def debug_server_error(request, exception=None):
+    """
+    A custom debug view to replace Django's default 500 debug page.
+    Provides a user-friendly server error message.
+    """
+    # Only show this in DEBUG mode
+    if not settings.DEBUG:
+        return HttpResponseServerError("<h1>500 – Internal Server Error</h1>")
+    
+    # Render our custom technical 500 template
+    html = render_to_string("technical_500.html", {}, request=request)
+    return HttpResponseServerError(html)
+
+def debug_bad_request(request, exception=None):
+    """
+    A custom debug view to replace Django's default 400 debug page.
+    Provides a user-friendly bad request message.
+    """
+    # Only show this in DEBUG mode
+    if not settings.DEBUG:
+        return HttpResponseBadRequest("<h1>400 – Bad Request</h1>")
+    
+    # Render our custom technical 400 template
+    html = render_to_string("technical_400.html", {}, request=request)
+    return HttpResponseBadRequest(html)
