@@ -1,14 +1,34 @@
-*.pyc
-django_startr.egg-info
-dist
-bread
-pastries
-extra_goodies
-pages
-project
-users
-fabfile.py
-__init__.py
-first_requirements.txt
-requirements.txt
-manage.py
+# Hidden-artifact allowlist: deny dotfiles and dotfolders everywhere in the
+# repo unless they are intentionally shared and explicitly included below.
+.*
+!/.gitignore
+!/.gitattributes
+!/.dockerignore
+!/.editorconfig
+# .env.example at any depth (no leading slash). Keep this note on its OWN line —
+# gitignore has no inline comments; a trailing comment becomes part of the pattern.
+!.*.example
+!.todoscope-exclude.csv
+
+# Python build & runtime junk
+__pycache__/
+*.py[cod]
+/dist/
+/build/
+*.egg-info/
+*.log
+
+# NOTE: this file used to carry a bare `__init__.py` line, which ignored EVERY
+# package init in the repo at every depth. The package therefore shipped with no
+# __init__.py at all and only imported via PEP 420 namespace packages, while
+# setup.py's packages=['django_startr'] silently dropped management/, commands/
+# and templatetags/. Do not reintroduce that pattern.
+
+# Scratch directories the generator writes into during manual testing.
+/project/
+/pages/
+/users/
+/bread/
+/pastries/
+/extra_goodies/
+/manage.py

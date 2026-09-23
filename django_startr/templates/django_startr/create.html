@@ -1,16 +1,22 @@
-{% templatetag openblock %} extends "{{ app_label }}/{{ model_name_slug }}_base.html" {% templatetag closeblock %}
+[#
+  Meta layer: [% %] and [[ ]].  Emitted layer: {% %} and {{ }}.
+  Everything in {% %} / {{ }} below is literal text that lands in the generated
+  template unchanged. See django_startr/metaenv.py.
+#]
+{% extends "[[ base_template ]]" %}
 
-{% verbatim %}{% block title %}{% endverbatim %}
-    Create {{ model_name }}
-{% verbatim %}{% endblock %}{% endverbatim %}
+{% block title %}Create [[ model_name ]]{% endblock %}
 
-{% verbatim %}{% block content %}{% endverbatim %}
-<h2><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>{{ model_name }}</a></h2>
-<h3>Create {{ model_name }}</h3>   
+{% block content %}
+<h2><a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_list') }}">[[ model_name ]]</a></h2>
+<h3>Create [[ model_name ]]</h3>
 <hr>
-<form action="" method="post">{% verbatim %}{% csrf_token %}{% endverbatim %}
-    {% verbatim %}{{ form.as_p }}{% endverbatim %}
-    <input type="submit" value="Create" />
+
+<form action="" method="post">
+  {{ csrf_input }}
+  {{ form.as_p() }}
+  <input type="submit" value="Create">
 </form>
-<a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>Cancel</a>
-{% verbatim %}{% endblock %}{% endverbatim %}
+
+<a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_list') }}">Cancel</a>
+{% endblock %}

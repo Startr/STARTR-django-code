@@ -1,50 +1,58 @@
-from django.urls import re_path  
-from ..views import ({{ model_name }}ListView, {{ model_name }}CreateView, {{ model_name }}DetailView,
-                     {{ model_name }}UpdateView, {{ model_name }}DeleteView)
+[# Emits Python.
+
+   A read-only model gets list and detail and nothing else. Emitting a create
+   route for an append-only model is not a style preference: the form saves,
+   the row appends, and the page lies about what happened. See is_readonly()
+   in startry.py for the three ways a model says so.
+
+   Do not end a content line with a meta block tag. trim_blocks eats the
+   newline after ANY block tag, and the generated module stops parsing. #]
+from django.urls import re_path
+[% if readonly %]
+from ..views import [[ model_name ]]ListView, [[ model_name ]]DetailView
+[% else %]
+from ..views import ([[ model_name ]]ListView, [[ model_name ]]CreateView, [[ model_name ]]DetailView,
+                     [[ model_name ]]UpdateView, [[ model_name ]]DeleteView)
 from django.contrib.auth.decorators import login_required
+[% endif %]
 
-{% if slug_field %}
 urlpatterns = [
+[% if not readonly %]
     re_path(r'^create/$',  # NOQA
-        login_required({{ model_name }}CreateView.as_view()),
-        name="{{ model_name_slug }}_create"),
+        login_required([[ model_name ]]CreateView.as_view()),
+        name="[[ model_name_slug ]]_create"),
 
-    re_path(r'^(?P<{{ slug_field_name }}>[-\w]+)/update/$',
-        login_required({{ model_name }}UpdateView.as_view()),
-        name="{{ model_name_slug }}_update"),
+[% if slug_field %]
+    re_path(r'^(?P<[[ slug_field_name ]]>[-\w]+)/update/$',
+        login_required([[ model_name ]]UpdateView.as_view()),
+        name="[[ model_name_slug ]]_update"),
 
-    re_path(r'^(?P<{{ slug_field_name }}>[-\w]+)/delete/$',
-        login_required({{ model_name }}DeleteView.as_view()),
-        name="{{ model_name_slug }}_delete"),
+    re_path(r'^(?P<[[ slug_field_name ]]>[-\w]+)/delete/$',
+        login_required([[ model_name ]]DeleteView.as_view()),
+        name="[[ model_name_slug ]]_delete"),
 
-    re_path(r'^(?P<{{ slug_field_name }}>[-\w]+)/$',
-        {{ model_name }}DetailView.as_view(),
-        name="{{ model_name_slug }}_detail"),
-
-    re_path(r'^$',
-        {{ model_name }}ListView.as_view(),
-        name="{{ model_name_slug }}_list"),
-]
-{% else %}
-urlpatterns = [
-    re_path(r'^create/$',  # NOQA
-        login_required({{ model_name }}CreateView.as_view()),
-        name="{{ model_name_slug }}_create"),
-
+[% else %]
     re_path(r'^(?P<pk>\d+)/update/$',
-        login_required({{ model_name }}UpdateView.as_view()),
-        name="{{ model_name_slug }}_update"),
+        login_required([[ model_name ]]UpdateView.as_view()),
+        name="[[ model_name_slug ]]_update"),
 
     re_path(r'^(?P<pk>\d+)/delete/$',
-        login_required({{ model_name }}DeleteView.as_view()),
-        name="{{ model_name_slug }}_delete"),
+        login_required([[ model_name ]]DeleteView.as_view()),
+        name="[[ model_name_slug ]]_delete"),
 
+[% endif %]
+[% endif %]
+[% if slug_field %]
+    re_path(r'^(?P<[[ slug_field_name ]]>[-\w]+)/$',
+        [[ model_name ]]DetailView.as_view(),
+        name="[[ model_name_slug ]]_detail"),
+[% else %]
     re_path(r'^(?P<pk>\d+)/$',
-        {{ model_name }}DetailView.as_view(),
-        name="{{ model_name_slug }}_detail"),
+        [[ model_name ]]DetailView.as_view(),
+        name="[[ model_name_slug ]]_detail"),
+[% endif %]
 
     re_path(r'^$',
-        {{ model_name }}ListView.as_view(),
-        name="{{ model_name_slug }}_list"),
+        [[ model_name ]]ListView.as_view(),
+        name="[[ model_name_slug ]]_list"),
 ]
-{% endif %}

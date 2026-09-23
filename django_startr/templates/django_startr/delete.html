@@ -1,17 +1,32 @@
-{% templatetag openblock %} extends "{{ app_label }}/{{ model_name_slug }}_base.html" {% templatetag closeblock %}
+[#
+  The confirm page. Reached in "page" mode; in the other two modes the model
+  still has this route, and the mode's own control is the confirmation.
 
-{% verbatim %}{% block title %}{% endverbatim %}
-    Delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}
-{% verbatim %}{% endblock %}{% endverbatim %}
+  "Are you sure?" is the question people click through without reading,
+  because it names nothing. Django's collector already knows exactly what goes
+  with the row, so this page says it — and when a PROTECT relation refuses the
+  delete outright, it says that instead of offering a button that 500s.
 
-{% verbatim %}{% block content %}{% endverbatim %}
-<h2>Delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}</h2>
+  delete_summary comes from django_startr.deletion.DeleteSummaryMixin.
+#]
+{% extends "[[ base_template ]]" %}
 
-<form action="" method="post">{% verbatim %}{% csrf_token %}{% endverbatim %}
-    <p>Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?</p>
-    <input type="submit" value="Confirm" />
+{% block title %}Delete {{ [[ model_name_slug ]] }}{% endblock %}
+
+{% block content %}
+<h2>Delete {{ [[ model_name_slug ]] }}</h2>
+
+{% if delete_summary.blocked %}
+<p>Cannot delete {{ [[ model_name_slug ]] }}{% if delete_summary.protected %}. In use by: {{ delete_summary.protected|join(", ") }}{% endif %}.</p>
+<a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_detail', [[ model_name_slug ]].[[ lookup_field ]]) }}">Back</a>
+{% else %}
+<form action="" method="post">
+  {{ csrf_input }}
+  <p>Delete {{ [[ model_name_slug ]] }}?</p>
+  {% if delete_summary.deletes %}<p>This also deletes {{ delete_summary.deletes|join(", ") }}.</p>{% endif %}
+  {% if delete_summary.clears %}<p>It clears the reference on {{ delete_summary.clears|join(", ") }}.</p>{% endif %}
+  <input type="submit" value="Confirm">
 </form>
-
-<a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_detail" {{ model_name_slug }}.{{ lookup_field }} {% templatetag closeblock %}>Cancel</a>
-
-{% verbatim %}{% endblock %}{% endverbatim %}
+<a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_detail', [[ model_name_slug ]].[[ lookup_field ]]) }}">Cancel</a>
+{% endif %}
+{% endblock %}

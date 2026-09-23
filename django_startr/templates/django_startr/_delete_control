@@ -1,0 +1,42 @@
+[#
+  The delete control, shared by list, detail and update so the three cannot
+  drift apart. Not emitted as a file of its own: the three stubs include it in
+  the META layer and the generated pages each carry their own copy.
+
+  Three shapes, chosen by settings.STARTR_DELETE_CONFIRM:
+
+    page    a link to the model's delete page, which the generator has always
+            written and nothing could ever reach. Confirm there POSTs.
+    inline  a <details> that opens the real form in place.
+    dialog  a plain POST form that delete-dialog.js intercepts.
+
+  Every shape ends in a POST. None of them deletes on a GET.
+
+  The object is `[[ model_name_slug ]]` in all three pages, which is why one
+  partial can serve them.
+
+  Both guards live here too, so the three pages cannot disagree about who sees
+  a delete control.
+#]
+{% if request.user.is_authenticated and delete_allowed|default(true) %}
+[% if delete_confirm == "page" %]
+<a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_delete', [[ model_name_slug ]].[[ lookup_field ]]) }}"
+   style="[[ delete_button_style ]]">Delete</a>
+[% elif delete_confirm == "inline" %]
+<details style="--d:inline-block">
+  <summary style="[[ delete_button_style ]]">Delete</summary>
+  <form method="post" action="{{ url('[[ app_label ]]:[[ model_name_slug ]]_delete', [[ model_name_slug ]].[[ lookup_field ]]) }}">
+    {{ csrf_input }}
+    <p>Delete {{ [[ model_name_slug ]] }}?</p>
+    <button type="submit">Confirm</button>
+  </form>
+</details>
+[% else %]
+<form style="--d:inline" method="post"
+      action="{{ url('[[ app_label ]]:[[ model_name_slug ]]_delete', [[ model_name_slug ]].[[ lookup_field ]]) }}"
+      data-confirm-delete="Delete {{ [[ model_name_slug ]] }}?">
+  {{ csrf_input }}
+  <button type="submit" style="[[ delete_button_style ]]">Delete</button>
+</form>
+[% endif %]
+{% endif %}

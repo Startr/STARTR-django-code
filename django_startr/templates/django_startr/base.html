@@ -1,1 +1,8 @@
-{% verbatim %}{% extends "base.html" %}{% endverbatim %}
+[#
+  Per-model base. Every generated page for this model extends THIS file, so a
+  project customises one file per model instead of five. It in turn extends the
+  project's own shell, which is settings.STARTR_BASE_TEMPLATE ("base.html" if
+  unset) — reastate's shell is "_shell.html", not "base.html", so this cannot be
+  hardcoded.
+#]
+{% extends "[[ project_base_template ]]" %}

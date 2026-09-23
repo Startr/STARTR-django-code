@@ -1,4 +1,7 @@
 include LICENSE
-include README.rst
+include LICENSE.md
+include README.md
 recursive-include django_startr/management *
+recursive-include django_startr/static *
 recursive-include django_startr/templates *
+recursive-include django_startr/templatetags *

@@ -1,8 +1,16 @@
-from django.urls import include, re_path  # Changed import
+[# Emits Python. Every tag here is meta; there is no emitted template layer.
 
-app_name = "{{ app_label }}"
+   Do not end a content line with a meta block tag. trim_blocks eats the
+   newline after ANY block tag, so `... ),[% endif %]` silently joins the next
+   iteration onto the same line and the generated module stops parsing. The
+   `# NOQA` used to be first-iteration-only for exactly that reason; per-line
+   is both simpler and more correct, since every one of these lines is long. #]
+from django.urls import include, re_path
+
+app_name = "[[ app_label ]]"
 
 urlpatterns = [
-{% for model_name_slug, plural_model_name_slug in model_names_dict.items %}
-    re_path(r'^{{ plural_model_name_slug }}/', include('{{ app_label }}.urls.{{ model_name_slug }}_urls')),{% if forloop.first %}  # NOQA{% endif %}{% endfor %}
+[% for model_name_slug, plural_model_name_slug in model_names_dict.items() %]
+    re_path(r'^[[ plural_model_name_slug ]]/', include('[[ app_module ]].urls.[[ model_name_slug ]]_urls')),  # NOQA
+[% endfor %]
 ]

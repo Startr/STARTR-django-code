@@ -1,30 +1,33 @@
-{% templatetag openblock %} extends "{{ app_label }}/{{ model_name_slug }}_base.html" {% templatetag closeblock %}
+[# Meta layer: [% %] and [[ ]].  Emitted layer: {% %} and {{ }} as literal text. #]
+{% extends "[[ base_template ]]" %}
 
-{% verbatim %}{% block title %}{% endverbatim %}
-    Update {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}
-{% verbatim %}{% endblock %}{% endverbatim %}
+{% block title %}Update {{ [[ model_name_slug ]] }}{% endblock %}
 
-{% verbatim %}{% block content %}{% endverbatim %}
-<h2><a href={% templatetag openblock %} url "{{ app_label }}:{{ model_name_slug }}_list" {% templatetag closeblock %}>{{ model_name }}</a></h2>
-<h3>Update {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}</h3>   
+{% block content %}
+<h2><a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_list') }}">[[ model_name ]]</a></h2>
+<h3>Update {{ [[ model_name_slug ]] }}</h3>
 <hr>
+
 <form action="" method="post">
-    {% verbatim %}{% csrf_token %}{% endverbatim %}
-    {% verbatim %}{{ form.as_p }}{% endverbatim %}
-    <input type="submit" value="Update" />
+  {{ csrf_input }}
+  {{ form.as_p() }}
+  <input type="submit" value="Update">
 </form>
-<a href={% templatetag openblock %}
-        url "{{ app_label }}:{{ model_name_slug }}_detail" 
-        {{ model_name_slug }}.{{ lookup_field }} 
-    {% templatetag closeblock %}
-    > Cancel </a>
-<form style="--d:inline" 
-    action={% templatetag openblock %} 
-        url "{{ app_label }}:{{ model_name_slug }}_delete" 
-        {{ model_name_slug }}.{{ lookup_field }} 
-    {% templatetag closeblock %} 
-    method="post" 
-    onsubmit="return confirm('Are you sure you want to delete {% templatetag openvariable %} {{ model_name_slug }} {% templatetag closevariable %}?')">{% verbatim %}{% csrf_token %}{% endverbatim %}
-    <input type="submit" value="Delete" />
-</form>
-{% verbatim %}{% endblock %}{% endverbatim %}
+
+<a href="{{ url('[[ app_label ]]:[[ model_name_slug ]]_detail', [[ model_name_slug ]].[[ lookup_field ]]) }}">Cancel</a>
+
+[#
+  The delete affordance links to the confirm page rather than posting straight
+  from here. The old stub carried onsubmit="return confirm(…)", an inline event
+  handler — grantable by an admin, unlike hyperscript, but a generator should
+  not make every consumer spend a scripting grant on a confirm dialog. A GET to
+  delete.html is the same guard with no script at all, and it survives with
+  JavaScript off.
+#]
+[% include "_delete_control" %]
+[% if delete_confirm == "dialog" %]
+{% if request.user.is_authenticated %}
+<script defer src="{{ static('django_startr/delete-dialog.js') }}"></script>
+{% endif %}
+[% endif %]
+{% endblock %}

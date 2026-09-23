@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+# Runtime dependencies mirror setup.py's install_requires. Keep the two in
+# step: setup.py is what a consumer installs, this is what we develop against,
+# and a drift between them is a bug that only shows up after publish.
+[packages]
+django = "~=4.2.16"
+jinja2 = ">=3.1"
+
+[dev-packages]
+build = "*"
+twine = "*"
+
+# 3.11 matches WEB-Django, the real consumer. setup.py declares >=3.9 because
+# the package supports it; we develop on what consumers actually run.
+[requires]
+python_version = "3.11"

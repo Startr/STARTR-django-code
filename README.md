@@ -191,6 +191,145 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('price',)
 ```
 
+## 🧭 Nav, columns and read-only models
+
+### The nav
+
+A generated list page is reachable only if something links to it. Mounting a urls module and linking to it are two acts, and the link is the one that gets forgotten: a page answers 200 and no shell points at it. The nav removes that act. Mount a model and its list page appears; unmount it and the entry goes.
+
+Wire it as a context processor on the backend that renders your shell. Django's Jinja2 backend runs context processors, but only the ones named in `OPTIONS`.
+
+```python
+TEMPLATES = [{
+    "BACKEND": "django.template.backends.jinja2.Jinja2",
+    "OPTIONS": {
+        "environment": "django_startr.jinja2env.environment",
+        "context_processors": ["django_startr.nav.startr_nav"],
+    },
+}]
+```
+
+The shell loops over `startr_nav` and reads `url` and `label` off each item.
+
+```jinja
+{% for item in startr_nav %}
+<a href="{{ item.url }}">{{ item.label }}</a>
+{% endfor %}
+```
+
+An entry shows only where the viewer can use it. An authenticated user needs `<app_label>.view_<model>`. An anonymous viewer sees every model entry, because a generated list view is unauthenticated out of the box; a project that puts its lists behind login sets `STARTR_NAV_ANON = False`.
+
+Each item also carries a `primary` flag, so the shell puts the few pages people use inline and folds the rest into a disclosure. `STARTR_NAV_PRIMARY` decides when set. Otherwise, if `STARTR_NAV_ORDER` is set, the entries it names plus every extra are primary. Otherwise everything is primary.
+
+All settings are optional.
+
+| Setting | Meaning |
+| --- | --- |
+| `STARTR_NAV_ORDER` | Slugs or route names to put first, in this order. The rest follow alphabetically by label. |
+| `STARTR_NAV_HIDE` | Slugs or route names never shown, whatever the permissions say. |
+| `STARTR_NAV_LABEL` | `{slug or route name: label}`, overriding the derived label. Key it by route name when two apps share a model name. |
+| `STARTR_NAV_EXTRA` | `[(route_name, label[, requirement]), ...]` for the hand-written pages a resolver walk cannot recognise. The requirement is a permission string, or `is_authenticated` / `is_staff` / `is_superuser`. |
+| `STARTR_NAV_ANON` | Default `True`. `False` drops the anonymous pass. |
+| `STARTR_NAV_PRIMARY` | Slugs or route names that belong in the main nav. |
+
+Two apps with a model of the same name produce two identical labels. Colliding labels get their app's name in front, unless a project set the label by hand in `STARTR_NAV_LABEL`.
+
+### List columns
+
+A row that renders the bare object is only as legible as the model's `__str__`. Widening `__str__` to fix that is the wrong move: the same string is what every ForeignKey dropdown, the admin changelist and every log line show. The list page gets a table instead, its columns guessed from the model.
+
+There is nothing to switch on. The generator ranks each field by how much it tells you about the row — a foreign key first, then a choice, then a date, then a boolean, then the rest — and keeps the top four. Prose, blobs and structures (text, JSON, binary, file) are left out.
+
+The columns are written into the template literally, so a wrong guess costs one edit in one file, and since an existing file is never overwritten that edit survives every later run.
+
+```
+<tr>
+  <td><a href="{{ url('store:product_detail', product.pk) }}">{{ product }}</a></td>
+  <td>{{ product.name }}</td>
+  <td>{{ product.price }}</td>
+</tr>
+```
+
+### Read-only models
+
+Some models append and are never edited or deleted. Generating a CreateView for one writes a form that saves, appends the row, and lies about what happened. A read-only model gets list and detail pages and nothing else.
+
+Say so on the model. `Startr` sits next to the fields it describes, so it is the form to prefer.
+
+```python
+class AuditEvent(models.Model):
+    action = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Startr:
+        readonly = True
+```
+
+Two other ways: a base class named `AppendOnlyModel`, or the model listed as `"app_label.ModelName"` in `settings.STARTR_READONLY_MODELS`.
+
+## 🗑️ Deleting
+
+A row with a one-click Delete on it deletes on one click. That was the old list page and the old detail page alike, and it was wrong: a misread row and a stray click destroyed a record and everything under it, with no second look and no way back.
+
+The generator has always written a `<model>_delete.html`, and nothing could reach it. Both pages posted straight at the delete route, and the generated `DeleteView` raised `Http404` on GET — so the confirm page 404ed even if you typed its URL. Deleting now means reaching that page, or one of two other second steps, chosen by settings.
+
+All three modes end in a POST. None of them deletes on a GET, so a prefetch, a crawler or a back button cannot remove a row. Two of the three need no JavaScript. Only dialog mode does, and with JavaScript off its form still posts — there is just no confirmation in front of it.
+
+### The second step
+
+The delete control is one partial, shared by the list, detail and update pages, so the three cannot drift apart. It renders one of three shapes, and each shape ends in a POST to the model's delete route.
+
+The mode is a project-wide setting, not a per-model one. `STARTR_DELETE_CONFIRM` picks the shape; the default is `page`.
+
+### The three modes
+
+| Mode | What it does | Needs JS |
+| --- | --- | --- |
+| `page` | A link to the model's delete page, which carries the Confirm form. The default. | No |
+| `inline` | A `<details>` that opens the real form in place, so a long list does not lose your position. | No |
+| `dialog` | A real `<dialog>`, opened by django_startr's own static file. | Yes |
+
+The small control in a list row:
+
+![A small Delete control beside the other row controls](docs/images/delete-modes/page-1-control.png)
+
+The confirm page names the cascade before it happens:
+
+![The delete confirm page listing what the delete also removes](docs/images/delete-modes/page-2-confirm.png)
+
+A row another table protects, so no Confirm button is offered:
+
+![A row protected by another table, with the delete refused](docs/images/delete-modes/page-3-blocked.png)
+
+The in-place reveal, opened:
+
+!["Inline mode" open, showing the Confirm form inside the row](docs/images/delete-modes/inline-2-confirm.png)
+
+The modal, open:
+
+![Dialog mode open, showing the Confirm form in a modal](docs/images/delete-modes/dialog-2-confirm.png)
+
+### What the confirm page says
+
+"Are you sure?" names nothing, so people click through it. Django's collector already knows exactly what a delete takes with it, because it is the same collector that runs a moment later. The confirm page says it before you commit:
+
+- **What it also deletes.** The cascades: `This also deletes 1 lead, 3 threads.`
+- **What it clears.** The rows whose reference is set to null rather than deleted: `It clears the reference on 2 actions.`
+- **What it cannot do.** A `PROTECT` foreign key refuses the delete outright. That used to be a 500 — the page offered a button the database would reject. Now it is a sentence and no Confirm button.
+
+The names come from the model's verbose names. Two apps with a model of the same name get their app name in front, so `1 link` and `1 link` never both appear.
+
+The blocked check runs twice on purpose. The template hides the Confirm button, and `post` checks again — a hidden button is a courtesy, not a guard, and the URL is still there to be typed.
+
+### Settings
+
+| Setting | Meaning |
+| --- | --- |
+| `STARTR_DELETE_CONFIRM` | Which second step the delete controls get: `page` (a link to the delete page), `inline` (a `<details>` opening the form in place), or `dialog` (a `<dialog>` opened by JavaScript). Default `page`. An unknown value raises rather than falling through to a mode nobody chose. |
+| `STARTR_DELETE_BUTTON_STYLE` | `startr.style` inline props for the control. Default `'--size: 0.6rem; --p: 0.4rem; --ml: 1rem;'`. |
+
+All settings are optional.
+
 ## 📋 Best Practices
 
 ### Project Structure

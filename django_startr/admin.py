@@ -66,7 +66,7 @@ def is_foreignkey(field_name, model):
         return False
 
 
-class ExtendedModelAdminMixin(object):
+class ExtendedModelAdminMixin:
     """
         Model Admin Mixin that makes (hopefully) intelligent choices to minimize the time it takes to get the admin up
         and running.

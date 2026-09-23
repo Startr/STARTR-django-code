@@ -1,0 +1,7 @@
+path,reason
+__pycache__,Python bytecode cache
+.venv,virtual environment
+dist,build output
+build,build output
+django_startr.egg-info,packaging metadata
+django_startr/templates/django_startr,meta-template stubs emit the literal word TODO via the dev-notes callable
