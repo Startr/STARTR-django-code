@@ -191,6 +191,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('price',)
 ```
 
+The admin is named "Startr Admin" in its header and browser title. Set `STARTR_ADMIN_TITLE` in settings to use another name. A project that names its own admin keeps that name, whether it sets `admin.site.site_header` or uses an `AdminSite` subclass.
+
 ## 🧭 Nav, columns and read-only models
 
 ### The nav

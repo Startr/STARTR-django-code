@@ -379,6 +379,31 @@ class RuntimeLayerTest(unittest.TestCase):
         self.assertIn("<aside", html)
 
 
+@unittest.skipUnless(HAS_DJANGO, "Django not installed; run this suite in a container")
+class AdminBrandTest(unittest.TestCase):
+    """Every consumer's admin said "Django administration" (2026-09-28)."""
+
+    def test_an_untouched_site_becomes_startr_admin(self):
+        from django.contrib.admin import AdminSite
+        from .apps import DEFAULT_ADMIN_TITLE, brand_admin
+        site = AdminSite()
+        brand_admin(site, DEFAULT_ADMIN_TITLE)
+        self.assertEqual((site.site_header, site.site_title), ("Startr Admin", "Startr Admin"))
+
+    def test_a_title_the_project_set_is_kept(self):
+        """A subclass attribute and an instance attribute both win, as in Tony's our_site."""
+        from django.contrib.admin import AdminSite
+        from .apps import brand_admin
+
+        class ProjectSite(AdminSite):
+            site_title = "Education Admin Portal"
+
+        site = ProjectSite()
+        site.site_header = "Our Admin"
+        brand_admin(site, "Startr Admin")
+        self.assertEqual((site.site_header, site.site_title), ("Our Admin", "Education Admin Portal"))
+
+
 class ListColumnTest(unittest.TestCase):
     """A list row must say more than the object's __str__.
 
