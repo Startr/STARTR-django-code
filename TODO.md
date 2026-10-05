@@ -36,7 +36,7 @@ Migrating from DTL meta-templates to Jinja2. Plan and rationale in
   - [x] `get_queryset` ANDs words, ORs fields, ends in `.distinct()`
   - [x] Field list from model introspection, text-ish concrete fields only
   - [x] Reuse the reastate pattern, do not write a second implementation
-    <!-- inline: WEB-AI-Sage-Sprig-reastate/crm/services/leads.py -->
+    <!-- inline: WEB-AI-Sage-Trellis/crm/services/leads.py -->
 
 - [ ] **CLI flags on `manage.py startr`**
   - [ ] `--dry-run` prints the plan, writes nothing
@@ -122,10 +122,22 @@ Migrating from DTL meta-templates to Jinja2. Plan and rationale in
   - [ ] Positional arg lands in the `urlconf` slot
   - [ ] Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`
 
-- [ ] **WEB-Django: submodule working tree is empty** #bug
-  - [ ] `git status` in `our_submodules/STARTR-django-code` shows every file `D`
-  - [ ] `make it_startr` cannot work in that state
-  - [ ] Confirm whether this is local-only before filing upstream
+- [x] **WEB-Django: submodule working tree is empty** #bug: `make deploy` tars `git ls-files --recurse-submodules`, which names 39 files not on disk; fixed 2026-10-05 by switching WEB-Django to a subtree, as Trellis did (2026-09-23)
+  - [x] `git status` in `our_submodules/STARTR-django-code` shows every file `D`
+  - [x] `make it_startr` cannot work in that state
+  - [x] Confirm whether this is local-only before filing upstream: local-only (2026-10-05). HEAD `b23a990` = the module's `origin/master`, no unpushed commits, no stash; nothing to file
+  - [x] [WE] WEB-Django edits, uncommitted (2026-10-05): `Makefile` (`startr_pull`/`startr_push`, plain `npx caprover deploy`, no submodule step in `it_setup`), `Dockerfile` (`ADD our_subtrees`), the `our_site/django_startr` symlink, `README.md`
+  - [x] [MANUALLY] Drop the submodule (`deinit`, `git rm`, `.git/modules/our_site/STARTR-django-code`) and commit it with the edits (`6569fd1`)
+  - [x] [MANUALLY] `git subtree add --prefix=our_subtrees/STARTR-django-code b23a990 --squash` (`faa0c09`, merged `9edec79`)
+  - [x] [WE] Verified 2026-10-05: the subtree's tree hash equals `b23a990`'s (41 paths); the symlink is tracked (120000) and resolves; `make -n deploy` is plain `npx caprover deploy`
+  - [x] [WE] An image built from `git archive HEAD` holds the generator under `our_subtrees`, `manage.py check` exits 0 (3 URL warnings in the project's `urls.py`), `manage.py test django_startr experiences` 18/18
+  - The pin stays `b23a990`; moving to `538316c` is the Backlog line "WEB-Django: add a Jinja2 backend, regenerate `experiences`, move the pin"
+
+- [x] **WEB-Django: `make test` collected nothing; `pytest.ini` opened with `[tool:pytest]`** #bug: that header belongs in `setup.cfg`, so pytest ignored the file (since `33a2004`, 2025-07-02); now `[pytest]`, uncommitted (2026-10-05)
+  - [x] `make test`'s command: a collection error before, 21 passed after (repo mounted read-only into an image built from `HEAD`)
+
+- [ ] **WEB-Django: the full pytest run cannot import `our_site.settings`** #bug: with the header fixed, `testpaths` fails `No module named 'our_site.settings'` and pytest-django finds no `manage.py`; `make test` names one file and passes
+  - [ ] Inside the built image, `/project/django_startr` (Dockerfile symlink to the generator's repo root) makes `django_startr` a two-location namespace package under `python -m pytest`; the server is unaffected (`manage.py` runs from `our_site/`)
 
 ## Done
 
