@@ -22,6 +22,18 @@ Migrating from DTL meta-templates to Jinja2. Plan and rationale in
 
 ## In Progress
 
+- [ ] **Startr/Sage branding in every generated project** #critical: a Django Startr project boots branded (mark, favicon, footer, colour tokens), not as a bare page (Alexander 2026-09-28)
+  - [x] Django admin named "Startr Admin": `apps.py` + `STARTR_ADMIN_TITLE`, a project's own title wins, login override shows `site_header`; 2 tests (2026-09-28, made in Trellis's subtree; `make startr_push` brings it here)
+  - [x] The admin skinned from startr.style tokens through Django's own CSS variables (header, links, buttons, tints, dark), the sidebar replaced by the apps and models as tiers in the header, a one-card sign-in; `STARTR_STYLE_URL` for a vendored kit; `STARTR_ADMIN_NAV = False` keeps Django's sidebar (2026-10-17); proof: NavRenderTest, Trellis `admin-skin.cy.js`
+  - [x] Two navs in the package, automatic for any project: `startr_nav_html("dock")` / `{% startr_nav %}` (first four primary pages on a phone, More for the rest) and tiers (apps as groups); `STARTR_NAV_DOCK`, `STARTR_NAV_GROUPS`, `STARTR_NAV_ICONS` refine (2026-10-17)
+  - [ ] [MANUALLY] The switch: one setting (`STARTR_BRAND = "startr" | "sage"`) or a per-project brand blocks file
+  - [ ] Brand assets ship in the package as static files, one source of truth: the Sage mark (AI-UI commit `228b958`), the Startr mark, favicons
+  - [ ] Base shell: header mark, footer credit, colours as startr.style tokens on `:root`, light and dark
+  - [x] Colour tokens live upstream in startr.style (1.4.x ships `--primary-tint`, `--good-bg`, `--warn-bg`, `--bad-bg`, `--font-sans`, `--font-mono`); the package maps, never defines (decided 2026-10-17)
+  - [ ] Block contract unchanged (`title` + `content`); consumers only gain blocks
+  - [ ] Gold test: Trellis via its subtree (`make startr_pull`); then the submodule consumers `AnatoliHS/Django3.0` (clones `Tony/Django3.0`, `WEB-Tony-Django`) and the `Startr/WEB-Django` template
+  - [ ] A generator test asserts the mark and the brand title in the base template
+
 - [ ] **Git setup** (Alexander — this session never writes to git)
   - [ ] `git checkout -b develop` from master
   - [ ] `git tag v0.22.0 master` — `make version_check` warns until it lands

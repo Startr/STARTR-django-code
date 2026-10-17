@@ -40,6 +40,13 @@ def configure_django():
             DATABASES={},
             ROOT_URLCONF="django_startr.tests",
             INSTALLED_APPS=["django_startr"],
+            # The navs render through Django templates (startr/nav_*.html).
+            TEMPLATES=[{
+                "BACKEND": "django.template.backends.django.DjangoTemplates",
+                "APP_DIRS": True,
+                "OPTIONS": {"context_processors": ["django.template.context_processors.request"]},
+            }],
+            STATIC_URL="/static/",
         )
         django.setup()
 
@@ -838,3 +845,94 @@ class NavTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+@unittest.skipUnless(STANDALONE, "not this package's own settings; run make test here")
+class NavRenderTest(unittest.TestCase):
+    """The dock and the tiers render from the same items, automatically.
+
+    A project gets a working nav on install: the first four primary pages in
+    the phone dock, the apps as groups, a generic icon for a page without one,
+    the current page marked on every copy of its link. Settings refine.
+    """
+
+    def setUp(self):
+        from django.test import RequestFactory
+        from django_startr import nav
+        self.nav = nav
+        nav.reset_cache()
+        self.factory = RequestFactory()
+
+    def _request(self, path="/app/widgets/"):
+        request = self.factory.get(path)
+        request.user = NavTest._User(False)
+        return request
+
+    @staticmethod
+    def _items(n=6, skip_primary=(2,)):
+        return [{"slug": f"s{i}", "name": f"n{i}", "url": f"/{i}/", "label": str(i), "primary": i not in skip_primary} for i in range(n)]
+
+    def test_current_marks_every_copy_of_the_longest_prefix(self):
+        items = [{"url": "/app/", "label": "Home"}, {"url": "/app/widgets/", "label": "W"}, {"url": "/app/widgets/", "label": "W again"}]
+        self.nav.with_current(items, "/app/widgets/3/")
+        self.assertEqual([item["current"] for item in items], [False, True, True])
+
+    def test_the_dock_defaults_to_the_first_four_primary_pages(self):
+        items = self._items()
+        dock = self.nav.dock_items(items)
+        self.assertEqual([item["slug"] for item in dock], ["s0", "s1", "s3", "s4"])
+        self.assertEqual([item["dock_order"] for item in items], [0, 1, 99, 2, 3, 99])
+
+    def test_the_dock_follows_the_setting_in_its_order(self):
+        from django.test import override_settings
+        with override_settings(STARTR_NAV_DOCK=["s4", "n0"]):
+            self.assertEqual([item["slug"] for item in self.nav.dock_items(self._items())], ["s4", "s0"])
+
+    def test_groups_are_the_apps_and_an_extra_falls_to_pages(self):
+        items = self.nav.nav_items(self._request())
+        items.append({"name": "home", "slug": "home", "url": "/", "label": "Home", "primary": True})
+        groups = self.nav.nav_groups(items)
+        self.assertEqual([label for label, _ in groups], ["Django_Startr", "Pages"])
+        self.assertEqual([item["label"] for item in groups[0][1]], ["Ledgers", "Makers", "Widgets"])
+
+    def test_a_named_group_comes_first_and_takes_its_members(self):
+        from django.test import override_settings
+        items = self.nav.nav_items(self._request())
+        # Slugs or full route names: "maker" is the slug of django_startr:maker-list.
+        with override_settings(STARTR_NAV_GROUPS={"Records": ["widget", "maker"]}):
+            groups = self.nav.nav_groups(items)
+        self.assertEqual([(label, [i["label"] for i in members]) for label, members in groups],
+                         [("Records", ["Makers", "Widgets"]), ("Django_Startr", ["Ledgers"])])
+
+    def test_admin_groups_come_from_the_admin_app_list(self):
+        app_list = [{"name": "Crm", "app_label": "crm", "models": [
+            {"name": "Leads", "object_name": "Lead", "admin_url": "/admin/crm/lead/"},
+            {"name": "No page", "object_name": "Nope", "admin_url": None},
+        ]}]
+        groups = self.nav.admin_groups(app_list, "/admin/crm/lead/5/change/")
+        self.assertEqual([(label, [i["label"] for i in members]) for label, members in groups], [("Crm", ["Leads"])])
+        self.assertTrue(groups[0][1][0]["current"])
+
+    def test_an_unknown_page_gets_the_generic_icon(self):
+        self.assertEqual(self.nav.icon_paths({"slug": "zzz", "name": "zzz"}), self.nav.DEFAULT_ICONS["page"])
+        self.assertEqual(self.nav.icon_paths({"slug": "lead", "name": "x"}), self.nav.DEFAULT_ICONS["lead"])
+
+    def test_the_dock_renders_with_its_hooks_and_no_classes(self):
+        html = self.nav.render_nav(self._request(), "dock")
+        for marker in ("<nav data-dock", "data-dock-items", "data-dock-more", "data-dock-bubble", 'aria-current="page"', "nav-dock.js", "--pe:none", 'data-swap-target="main"'):
+            self.assertIn(marker, html)
+        self.assertNotIn(' class="', html)
+
+    def test_the_tiers_render_with_one_row_shown(self):
+        html = self.nav.render_nav(self._request(), "tiers")
+        self.assertIn("<nav data-tiers", html)
+        self.assertIn('aria-current="true"', html)
+        self.assertEqual(html.count("<div data-row="), html.count(" hidden>") + 1)
+        self.assertIn("nav-tiers.js", html)
+
+    def test_the_context_processor_offers_the_rendered_navs(self):
+        context = self.nav.startr_nav(self._request())
+        self.assertEqual(context["startr_nav_path"], "/app/widgets/")
+        self.assertIn("data-dock", context["startr_nav_html"]("dock"))
+        self.assertIn("data-tiers", context["startr_nav_html"]("tiers"))
+        self.assertTrue(any(item["current"] for item in context["startr_nav"]))

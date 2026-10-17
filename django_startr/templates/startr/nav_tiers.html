@@ -1,0 +1,32 @@
+{% load static startr_nav %}{% comment %}
+Two tiers: groups on top, the current group's pages beneath. Groups are the
+project's apps (nav_groups) or the admin's (admin_groups); each group link
+goes to its first page, so the nav works with JavaScript off, where the
+server shows the current page's group. nav-tiers.js reveals a group's row in
+place, glides the bar under the group and the pill under the page, and
+re-marks after a swap. Each row is a plain div toggled with `hidden`; its
+layout sits on the inner div, so the kit's !important display props never
+fight the attribute. Looks are inline props with kit tokens.
+{% endcomment %}{% with group_s="--d:inline-flex; --ai:center; --g:.4rem; --p:.6rem .9rem; --size:.85rem; --weight:600; --ws:nowrap; --c:var(--text-muted); --c-hover:var(--text-main); --c-on:var(--text-main); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.5rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" page_s="--pos:relative; --z:1; --d:inline-flex; --ai:center; --g:.45rem; --p:.5rem .8rem; --size:.85rem; --ws:nowrap; --c:var(--text-bright); --c-hover:var(--text-main); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.6rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" %}
+<nav data-tiers aria-label="Main" style="--d:grid; --g:.5rem;">
+  <div data-tiers-groups style="--pos:relative; --d:flex; --g:.25rem; --of:auto; --bb:1px solid var(--border);">
+    {% for label, members in groups %}
+    <a href="{{ members.0.url }}" data-group="{{ forloop.counter0 }}"{% if label == current_group %} aria-current="true"{% endif %} style="{{ group_s }}">{{ label }}<em style="--fs:normal; --size:.7rem; --p:.05rem .45rem; --radius:999px; --bg:var(--primary-tint); --c:var(--primary);">{{ members|length }}</em></a>
+    {% endfor %}
+    <span data-tiers-bar aria-hidden="true" style="--pos:absolute; --bottom:-1px; --left:0; --w:0; --h:2px; --radius:2px; --bg:var(--primary); --tn:left var(--dur-2) var(--ease-spring), width var(--dur-2) var(--ease-spring);"></span>
+  </div>
+  <div data-tiers-pages style="--pos:relative; --bg:var(--primary-tint); --radius:.75rem;">
+    <span data-tiers-pill aria-hidden="true" style="--pos:absolute; --top:.35rem; --bottom:.35rem; --left:0; --w:0; --op:0; --radius:.6rem; --bg:var(--background); --boxs:0 6px 16px rgba(0, 0, 0, .08); --bb:2px solid var(--primary); --tn:left var(--dur-2) var(--ease-spring), width var(--dur-2) var(--ease-spring), opacity var(--dur-1) var(--ease-out); --pe:none;"></span>
+    {% for label, members in groups %}
+    <div data-row="{{ forloop.counter0 }}"{% if label != current_group %} hidden{% endif %}>
+      <div style="--d:flex; --g:.25rem; --p:.35rem .5rem; --of:auto;">
+        {% for item in members %}
+        <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="{{ page_s }}">{% nav_icon item %}<span>{{ item.label }}</span></a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <script defer src="{% static 'django_startr/nav-tiers.js' %}"></script>
+</nav>
+{% endwith %}

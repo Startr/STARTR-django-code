@@ -1,73 +1,99 @@
-{% extends "admin/base_site.html" %} {% load smart_select %} {% block extrahead %} {{ block.super }}
+{% extends "admin/base.html" %}{% load i18n static smart_select startr_nav %}{% comment %}
+The Django admin in the project's own look, automatically. The admin styles
+itself from CSS variables; this maps them to startr.style's tokens, so the
+header, links, buttons and tints follow the brand and flip with
+[data-theme="dark"]. The sidebar is off (apps.py); the header carries the
+nav as tiers from the admin's own app list. The admin's markup stays
+Django's, which is why the two <style> blocks below are the one place this
+package ships CSS. A project with data-theme="auto" in a dark OS gets Django's
+own dark palette: the kit's tokens do not flip for "auto".
+{% endcomment %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" href="{% startr_style_url %}">
 <style>
-  .module {
-    overflow-x: scroll;
+  /* Django admin variables from startr.style tokens. Same specificity as
+     Django's dark set and later in the page, so these win in both themes. */
+  :root, html[data-theme="dark"] {
+    --font-family-primary: var(--font-sans);
+    --font-family-monospace: var(--font-mono);
+    --body-bg: var(--background);
+    --body-fg: var(--text-main);
+    --body-quiet-color: var(--text-muted);
+    --body-medium-color: var(--text-bright);
+    --body-loud-color: var(--text-main);
+    --header-bg: var(--background);
+    --header-color: var(--text-main);
+    --header-branding-color: var(--primary);
+    --header-link-color: var(--text-main);
+    --breadcrumbs-bg: var(--primary-tint);
+    --breadcrumbs-fg: var(--text-bright);
+    --breadcrumbs-link-fg: var(--primary);
+    --link-fg: var(--links);
+    --link-hover-color: var(--primary);
+    --link-selected-fg: var(--primary);
+    --hairline-color: var(--border);
+    --border-color: var(--border);
+    --darkened-bg: var(--primary-tint);
+    --selected-bg: var(--primary-tint);
+    --selected-row: var(--primary-tint);
+    --accent: var(--primary-tint);
+    --primary-fg: var(--color-7);
+    --button-fg: var(--color-7);
+    --button-bg: var(--primary);
+    --button-hover-bg: color-mix(in srgb, var(--primary) 85%, var(--text-main));
+    --default-button-bg: var(--primary);
+    --default-button-hover-bg: color-mix(in srgb, var(--primary) 85%, var(--text-main));
+    --close-button-bg: var(--text-muted);
+    --close-button-hover-bg: var(--text-bright);
+    --delete-button-bg: var(--red);
+    --delete-button-hover-bg: color-mix(in srgb, var(--red) 85%, var(--text-main));
+    --object-tools-fg: var(--color-7);
+    --object-tools-bg: var(--text-bright);
+    --object-tools-hover-bg: var(--text-main);
+    --message-success-bg: var(--good-bg);
+    --message-warning-bg: var(--warn-bg);
+    --message-error-bg: var(--bad-bg);
+    --error-fg: var(--red);
   }
-
-  .column-years {
-    min-width: 6rem;
-  }
-
-  .related-widget-wrapper {
-    overflow: visible !important;
-  }
-
-  .form-row {
-    overflow: visible !important;
-  }
-
-  .smart-select-wrapper {
-    position: relative;
-    margin-bottom: 10px;
-    min-width: 10rem;
-    padding: 0 0.6rem 0 0;
-  }
-  .smart-options {
-    position: absolute;
-    z-index: 1000;
-    background: white;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    display: none;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  .smart-options li {
-    padding: 8px 12px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-  }
-  .smart-options li:hover {
-    background: #f5f5f5;
-    position: relative;
-    z-index: 1001;
-  }
-  
-  input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField,   .smart-select-wrapper input {
-    width: 100%;
-    width: -webkit-fill-available;
-    padding: 0.4rem;
-    margin: 0 0 0.4rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .smart-options li.highlighted {
-    background: #f0f0f0;
-  }
-
-  #toolbar #searchbar {
-    height: 1.1875rem;
-    border: 1px solid var(--border-color);
-    padding: 2px 5px;
-    margin: 0.6em;
-    vertical-align: top;
-    font-size: 0.8125rem;
-    max-width: 100%;
-  }
+  /* Widgets the generated admins use (smart select), and inputs that fill their row. */
+  .module { overflow-x: auto; }
+  .column-years { min-width: 6rem; }
+  .related-widget-wrapper, .form-row { overflow: visible !important; }
+  .smart-select-wrapper { position: relative; margin-bottom: 10px; min-width: 10rem; padding: 0 0.6rem 0 0; }
+  .smart-options { position: absolute; z-index: 1000; background: var(--body-bg); border: 1px solid var(--border-color); width: 100%; max-height: 200px; overflow-y: auto; display: none; list-style: none; margin: 0; padding: 0; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+  .smart-options li { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--hairline-color); }
+  .smart-options li:hover, .smart-options li.highlighted { background: var(--selected-bg); position: relative; z-index: 1001; }
+  input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField, .smart-select-wrapper input { width: 100%; width: -webkit-fill-available; padding: 0.4rem; margin: 0 0 0.4rem 0; border: 1px solid var(--border-color); border-radius: 4px; }
+  #toolbar #searchbar { height: 1.1875rem; border: 1px solid var(--border-color); padding: 2px 5px; margin: 0.6em; vertical-align: top; font-size: 0.8125rem; max-width: 100%; }
 </style>
-{% endblock %} {% block footer %} {{ block.super }} {% smart_select_js %} {% endblock %}
+{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block header %}{% if has_permission %}
+<header data-admin-header style="--d:grid; --g:.75rem; --p:1rem 1rem 0; --p-md:1rem 2rem 0; --bg:var(--background); --bb:1px solid var(--border);">
+  <div style="--d:flex; --fw:wrap; --ai:center; --g:.5rem 1rem;">
+    <a href="{% url 'admin:index' %}" data-admin-brand style="--d:inline-flex; --ai:center; --g:.6rem; --c:var(--text-main); --weight:700; --size:1.05rem; text-decoration:none;">
+      <span data-admin-mark aria-hidden="true" style="--d:inline-flex; --ai:center; --jc:center; --w:30px; --h:30px; --radius:50%; --bg:linear-gradient(135deg, var(--primary), var(--secondary)); --c:var(--color-7); --size:.9rem; --glow:3;">{{ site_header|slice:":1" }}</span>
+      <span>{{ site_header }}</span>
+    </a>
+    {% block usertools %}
+    <div id="user-tools" style="--ml:auto; --d:flex; --fw:wrap; --ai:center; --g:.25rem .6rem; --m:0; --p:0;">
+      {% block welcome-msg %}<span style="--d:none; --d-md:inline;">{% translate 'Welcome,' %} <strong>{% firstof user.get_short_name user.get_username %}</strong>.</span>{% endblock %}
+      {% block userlinks %}
+        {% if site_url %}<a href="{{ site_url }}">{% translate 'View site' %}</a> /{% endif %}
+        {% if user.is_active and user.is_staff %}{% url 'django-admindocs-docroot' as docsroot %}{% if docsroot %}<a href="{{ docsroot }}">{% translate 'Documentation' %}</a> /{% endif %}{% endif %}
+        {% if user.has_usable_password %}<a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a> /{% endif %}
+        <form id="logout-form" method="post" action="{% url 'admin:logout' %}">{% csrf_token %}<button type="submit">{% translate 'Log out' %}</button></form>
+        {% include "admin/color_theme_toggle.html" %}
+      {% endblock %}
+    </div>
+    {% endblock %}
+  </div>
+  {% block nav-global %}{% if not is_popup %}{% startr_admin_nav %}{% endif %}{% endblock %}
+</header>
+{% endif %}{% endblock %}
+
+{% block footer %}{{ block.super }}{% smart_select_js %}{% endblock %}

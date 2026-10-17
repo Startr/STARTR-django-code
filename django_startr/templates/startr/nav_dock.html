@@ -1,0 +1,32 @@
+{% load static startr_nav %}{% comment %}
+The dock. Fixed to the bottom on a phone with the dock pages and More as a
+sheet; in flow on a desktop (-md) with every primary page and More as a menu.
+Looks are inline props with kit tokens; nav-dock.js sets attributes and
+geometry only (the bar's cavity, the bubble, aria-current after a swap, More
+standing in for a page in its sheet). Without the script: a plain bar, the
+current page marked by the server. Rendered by django_startr.nav.render_nav
+for a Django or a Jinja shell alike.
+{% endcomment %}{% with item_s="--fd:column; --ai:center; --jc:center; --g:.2rem; --size:.68rem; --c:var(--text-muted); --c-hover:var(--text-main); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-4px; --radius:.75rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" reset_s="--m:0; --b:0; --bg:transparent; --radius:0;" icon_s="--op-in-on:0; --tn:opacity var(--dur-2) var(--ease-out);" %}
+<nav data-dock aria-label="Main" style="--pos:fixed; --left:0; --right:0; --bottom:0; --z:50; --h:76px; --pos-md:relative; --maxw-md:1040px; --m-md:44px auto 0;">
+  <svg data-dock-shape aria-hidden="true" viewBox="0 0 1000 76" preserveAspectRatio="none" style="--pos:absolute; --inset:0; --w:100%; --h:100%; --of:visible;">
+    <path d="M20 0H980Q1000 0 1000 20V56Q1000 76 980 76H20Q0 76 0 56V20Q0 0 20 0Z" fill="var(--background)" stroke="var(--border)" stroke-width="1" />
+  </svg>
+  <div data-dock-items style="--pos:relative; --z:1; --d:flex; --h:100%; --p:0 .5rem; --p-md:0 2.25rem;">
+    {% for item in items %}{% if item.primary %}
+    <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="{{ item_s }} --fx:1; --d:{% if item in dock %}flex{% else %}none{% endif %}; --d-md:flex; --o:{{ item.dock_order }}; --o-md:0;">{% nav_icon item icon_s %}<span>{{ item.label }}</span></a>
+    {% endif %}{% endfor %}
+    <details data-dock-more style="{{ reset_s }} --px:0; --pos:relative; --fx:1; --d:flex; --fx-md:0 0 auto;">
+      <summary style="{{ reset_s }} {{ item_s }} --d:flex; --h:100%; --w:100%; --p:0 .5rem; --cur:pointer; --ls:none;">{% nav_icon more icon_s %}<span data-label="More">More</span></summary>
+      <div style="--pos:fixed; --left:0; --right:0; --bottom:76px; --z:60; --bg:var(--background); --bt:1px solid var(--border); --radius:1rem 1rem 0 0; --boxs:0 -12px 30px rgba(0, 0, 0, .12); --p:1rem 1rem 1.25rem; --d:grid; --gtc:repeat(2, minmax(0, 1fr)); --g:.25rem 1rem; --pos-md:absolute; --top-md:calc(100% + .5rem); --right-md:0; --bottom-md:auto; --left-md:auto; --minw-md:14rem; --radius-md:.75rem; --gtc-md:1fr; --boxs-md:0 12px 30px rgba(0, 0, 0, .15);">
+        {% for item in sheet %}
+        <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="--d:flex; --d-md:{% if item.primary %}none{% else %}flex{% endif %}; --ai:center; --g:.6rem; --p:.5rem .4rem; --radius:.5rem; --c:var(--text-main); --c-on:var(--primary); --bg-hover:var(--primary-tint); --oe-focus:2px solid var(--primary); --oo:-2px; text-decoration:none;">{% nav_icon item %}<span>{{ item.label }}</span></a>
+        {% endfor %}
+      </div>
+    </details>
+  </div>
+  <span data-dock-bubble aria-hidden="true" style="--pos:absolute; --top:-28px; --left:0; --z:2; --w:56px; --h:56px; --radius:50%; --d:none; --ai:center; --jc:center; --bg:linear-gradient(135deg, var(--primary), var(--secondary)); --c:var(--color-7); --glow:5; --pe:none;">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="--h:24px;"></svg>
+  </span>
+  <script defer src="{% static 'django_startr/nav-dock.js' %}"></script>
+</nav>
+{% endwith %}
