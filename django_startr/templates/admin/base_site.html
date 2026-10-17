@@ -76,7 +76,7 @@ own dark palette: the kit's tokens do not flip for "auto".
 {% block nav-breadcrumbs %}{% endblock %}
 
 {% block header %}{% if has_permission %}
-<header data-admin-header style="--d:grid; --g:.75rem; --p:1rem 1rem 0; --p-md:1rem 2rem 0; --bg:var(--background); --bb:1px solid var(--border);">
+<header data-admin-header style="--d:grid; --g:.75rem; --p:1rem 1rem 0; --p-md:1rem 2rem 0; --bg:var(--background);">
   <div style="--d:flex; --fw:wrap; --ai:center; --g:.5rem 1rem;">
     <a href="{% url 'admin:index' %}" data-admin-brand style="--d:inline-flex; --ai:center; --g:.6rem; --c:var(--text-main); --weight:700; --size:1.05rem; text-decoration:none;">
       <span data-admin-mark aria-hidden="true" style="--d:inline-flex; --ai:center; --jc:center; --w:30px; --h:30px; --radius:50%; --bg:linear-gradient(135deg, var(--primary), var(--secondary)); --c:var(--color-7); --size:.9rem; --glow:3;">{{ site_header|slice:":1" }}</span>
