@@ -412,7 +412,27 @@ def admin_groups(available_apps, path):
     return groups
 
 
-def render_nav(request, kind="dock", items=None, groups=None):
+def admin_tail(path, groups, title=None, subtitle=None, obj=None):
+    """The crumb a page below a change list adds to the tiers: the object, or the action.
+
+    None on an index or a change list, where the tiers already say it all.
+    Below a list (change, add, delete, history) the admin's own context names
+    the page: ``subtitle`` (the object on a change form), ``object`` (delete,
+    history) or ``title`` ("Add lead"). Delete and history name the action too.
+    """
+    lists = [item["url"] for _, members in groups for item in members]
+    if not path or path in lists or not any(path.startswith(url) for url in lists):
+        return None
+    name = str(subtitle or obj or title or "").strip()
+    if not name:
+        return None
+    for suffix, action in (("/delete/", "Delete"), ("/history/", "History")):
+        if path.endswith(suffix) and (subtitle or obj):
+            return f"{name} · {action}"
+    return name
+
+
+def render_nav(request, kind="dock", items=None, groups=None, tail=None):
     """The nav as HTML, from ``startr/nav_<kind>.html``: ``dock`` or ``tiers``.
 
     A Django template renders it so the admin and a Jinja shell share one
@@ -424,7 +444,7 @@ def render_nav(request, kind="dock", items=None, groups=None):
     if items is None:
         items = nav_items(request)
     with_current(items, path)
-    context = {"items": items, "path": path, "kind": kind, "more": {"slug": "more", "name": "more", "label": "More"}}
+    context = {"items": items, "path": path, "kind": kind, "tail": tail, "more": {"slug": "more", "name": "more", "label": "More"}}
     if kind == "dock":
         dock = dock_items(items)
         context["dock"] = dock

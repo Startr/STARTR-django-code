@@ -27,9 +27,6 @@ own dark palette: the kit's tokens do not flip for "auto".
     --header-color: var(--text-main);
     --header-branding-color: var(--primary);
     --header-link-color: var(--text-main);
-    --breadcrumbs-bg: var(--primary-tint);
-    --breadcrumbs-fg: var(--text-bright);
-    --breadcrumbs-link-fg: var(--primary);
     --link-fg: var(--links);
     --link-hover-color: var(--primary);
     --link-selected-fg: var(--primary);
@@ -75,6 +72,8 @@ own dark palette: the kit's tokens do not flip for "auto".
 {% endblock %}
 
 {% block nav-sidebar %}{% endblock %}
+{# Django's breadcrumbs go: the tiers say group and list, and below a list the pages row ends with the object. #}
+{% block nav-breadcrumbs %}{% endblock %}
 
 {% block header %}{% if has_permission %}
 <header data-admin-header style="--d:grid; --g:.75rem; --p:1rem 1rem 0; --p-md:1rem 2rem 0; --bg:var(--background); --bb:1px solid var(--border);">

@@ -913,6 +913,23 @@ class NavRenderTest(unittest.TestCase):
         self.assertEqual([(label, [i["label"] for i in members]) for label, members in groups], [("Crm", ["Leads"])])
         self.assertTrue(groups[0][1][0]["current"])
 
+    def test_the_admin_tail_names_the_page_below_a_list(self):
+        groups = [("Crm", [{"label": "Leads", "url": "/admin/crm/lead/", "slug": "lead", "name": "crm.Lead", "primary": True}])]
+        tail = self.nav.admin_tail
+        self.assertIsNone(tail("/admin/", groups, title="Site administration"))
+        self.assertIsNone(tail("/admin/crm/lead/", groups, title="Select lead to change"))
+        self.assertEqual(tail("/admin/crm/lead/5/change/", groups, title="Change lead", subtitle="Theodore Zelazny"), "Theodore Zelazny")
+        self.assertEqual(tail("/admin/crm/lead/add/", groups, title="Add lead"), "Add lead")
+        self.assertEqual(tail("/admin/crm/lead/5/delete/", groups, title="Are you sure?", obj="Theodore Zelazny"), "Theodore Zelazny · Delete")
+        self.assertEqual(tail("/admin/crm/lead/5/history/", groups, title="Change history: Theodore Zelazny", obj="Theodore Zelazny"), "Theodore Zelazny · History")
+
+    def test_a_tail_is_the_current_page_and_the_list_keeps_the_pill(self):
+        html = self.nav.render_nav(self._request("/app/widgets/3/"), "tiers", tail="Widget 3")
+        self.assertIn('data-tiers-tail aria-current="page"', html)
+        self.assertIn("Widget 3", html)
+        self.assertIn('href="/app/widgets/" data-swap-target="main" data-on', html)
+        self.assertNotIn('data-swap-target="main" aria-current="page"', html)
+
     def test_an_unknown_page_gets_the_generic_icon(self):
         self.assertEqual(self.nav.icon_paths({"slug": "zzz", "name": "zzz"}), self.nav.DEFAULT_ICONS["page"])
         self.assertEqual(self.nav.icon_paths({"slug": "lead", "name": "x"}), self.nav.DEFAULT_ICONS["lead"])

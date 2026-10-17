@@ -15,7 +15,7 @@ from django.conf import settings
 from django.templatetags.static import static
 from django.utils.safestring import mark_safe
 
-from ..nav import admin_groups, icon_paths, render_nav
+from ..nav import admin_groups, admin_tail, icon_paths, render_nav
 
 register = template.Library()
 
@@ -42,8 +42,11 @@ def startr_nav(context, kind="dock"):
 def startr_admin_nav(context):
     """Tiers from the admin's own ``available_apps``, permissions already applied."""
     request = context.get("request")
-    groups = admin_groups(context.get("available_apps"), getattr(request, "path", "") or "")
-    return render_nav(request, "tiers", items=[item for _, members in groups for item in members], groups=groups)
+    path = getattr(request, "path", "") or ""
+    groups = admin_groups(context.get("available_apps"), path)
+    tail = admin_tail(path, groups, title=context.get("title"), subtitle=context.get("subtitle"),
+                      obj=context.get("object") or context.get("original"))
+    return render_nav(request, "tiers", items=[item for _, members in groups for item in members], groups=groups, tail=tail)
 
 
 @register.simple_tag

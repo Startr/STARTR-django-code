@@ -4,12 +4,14 @@ project's apps (nav_groups) or the admin's (admin_groups); each group link
 goes to its first page, so the nav works with JavaScript off, where the
 server shows the current page's group. nav-tiers.js reveals a group's row in
 place, glides the bar under the group and the pill under the page, and
-re-marks after a swap. Each row is a plain div toggled with `hidden`; its
+re-marks after a swap. Below a change list the row ends with a crumb for the
+object or action (`tail`), which is then the current page; the list link keeps
+the kit's on-state and the pill. Each row is a plain div toggled with `hidden`; its
 layout sits on the inner div, so the kit's !important display props never
 fight the attribute. Looks are inline props with kit tokens.
 {% endcomment %}{% with group_s="--d:inline-flex; --ai:center; --g:.4rem; --p:.6rem .9rem; --size:.85rem; --weight:600; --ws:nowrap; --c:var(--text-main); --c-hover:var(--primary); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.5rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" page_s="--pos:relative; --z:1; --d:inline-flex; --ai:center; --g:.45rem; --p:.5rem .8rem; --size:.85rem; --ws:nowrap; --c:var(--text-main); --c-hover:var(--primary); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.6rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" %}
 <nav data-tiers aria-label="Main" style="--d:grid; --g:.5rem;">
-  <div data-tiers-groups style="--pos:relative; --d:flex; --g:.25rem; --of:auto; --bb:1px solid var(--border);">
+  <div data-tiers-groups style="--pos:relative; --d:flex; --g:.25rem; --of:auto;">
     {% for label, members in groups %}
     <a href="{{ members.0.url }}" data-group="{{ forloop.counter0 }}"{% if label == current_group %} aria-current="true"{% endif %} style="{{ group_s }}">{{ label }}<em style="--fs:normal; --size:.7rem; --p:.05rem .45rem; --radius:999px; --bg:var(--primary-tint); --c:var(--primary);">{{ members|length }}</em></a>
     {% endfor %}
@@ -21,8 +23,9 @@ fight the attribute. Looks are inline props with kit tokens.
     <div data-row="{{ forloop.counter0 }}"{% if label != current_group %} hidden{% endif %}>
       <div style="--d:flex; --g:.25rem; --p:.35rem .5rem; --of:auto;">
         {% for item in members %}
-        <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="{{ page_s }}">{% nav_icon item %}<span>{{ item.label }}</span></a>
+        <a href="{{ item.url }}" data-swap-target="main"{% if item.current %}{% if tail %} data-on{% else %} aria-current="page"{% endif %}{% endif %} style="{{ page_s }}">{% nav_icon item %}<span>{{ item.label }}</span></a>
         {% endfor %}
+        {% if tail and label == current_group %}<span data-tiers-tail aria-current="page" style="--pos:relative; --z:1; --d:inline-flex; --ai:center; --g:.45rem; --p:.5rem .6rem; --size:.85rem; --ws:nowrap; --c:var(--text-main);"><span aria-hidden="true">›</span>{{ tail }}</span>{% endif %}
       </div>
     </div>
     {% endfor %}

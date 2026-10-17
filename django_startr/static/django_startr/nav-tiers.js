@@ -25,7 +25,7 @@
 
   const placePill = () => {
     const row = rows[shown];
-    const current = row && row.querySelector("a[aria-current]");
+    const current = row && row.querySelector("a[aria-current], a[data-on]");
     pill.style.setProperty("--op", current ? "1" : "0");
     if (current) fit(pill, current, row.firstElementChild ? row.firstElementChild.offsetLeft - row.firstElementChild.scrollLeft : 0);
   };
