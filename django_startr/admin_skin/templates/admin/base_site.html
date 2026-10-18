@@ -1,21 +1,28 @@
 {% extends "admin/base.html" %}{% load i18n static smart_select startr_nav %}{% comment %}
 The Django admin in the project's own look, automatically. The admin styles
 itself from CSS variables; this maps them to startr.style's tokens, so the
-header, links, buttons and tints follow the brand and flip with
-[data-theme="dark"]. The sidebar is off (apps.py); the header carries the
-nav as tiers from the admin's own app list. The admin's markup stays
-Django's, which is why the two <style> blocks below are the one place this
-package ships CSS. A project with data-theme="auto" in a dark OS gets Django's
-own dark palette: the kit's tokens do not flip for "auto".
+header, links, buttons and tints follow the brand. The skin owns the theme:
+Django's dark mode and theme toggle are left out (dark-mode-vars below), so
+the admin is light unless the project sets data-theme="dark", which flips the
+kit's tokens and with them the map. The header carries the nav as tiers from
+the admin's own app list exactly when the sidebar is off (django_startr.admin_skin
+turns it off when this template is the one served). The admin's markup stays
+Django's, which is why the <style> block below is the one place this package
+ships CSS.
 {% endcomment %}
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{# No dark_mode.css, no theme.js: the kit's theme drives the map, not Django's palette. #}
+{% block dark-mode-vars %}{% endblock %}
 
 {% block extrastyle %}{{ block.super }}
 <link rel="stylesheet" href="{% startr_style_url %}">
 <style>
-  /* Django admin variables from startr.style tokens. Same specificity as
-     Django's dark set and later in the page, so these win in both themes. */
-  :root, html[data-theme="dark"] {
+  /* Django admin variables from startr.style tokens. Django's own sets sit on
+     `:root` and `html[data-theme="light"]`, so `html[data-theme]` (same
+     specificity) and a later position win for any theme the page declares. */
+  :root, html[data-theme] {
+    color-scheme: light;
     --font-family-primary: var(--font-sans);
     --font-family-monospace: var(--font-mono);
     --body-bg: var(--background);
@@ -54,6 +61,14 @@ own dark palette: the kit's tokens do not flip for "auto".
     --message-error-bg: var(--bad-bg);
     --error-fg: var(--red);
   }
+  html[data-theme="dark"] { color-scheme: dark; }
+  /* Django 5.2 paints module headings on --header-bg; 4.2 on --primary. One rule, both versions. */
+  .module h2, .module caption, .inline-group h2 { background: var(--header-bg); color: var(--header-link-color); }
+  /* The signed-in name stays in the accessibility tree on a phone: hidden to the eye, not removed. */
+  #user-tools .welcome { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (min-width: 768px) {
+    #user-tools .welcome { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
+  }
   /* Widgets the generated admins use (smart select), and inputs that fill their row. */
   .module { overflow-x: auto; }
   .column-years { min-width: 6rem; }
@@ -71,9 +86,8 @@ own dark palette: the kit's tokens do not flip for "auto".
 <meta name="description" content="{{ site_header }}: {{ title }}">
 {% endblock %}
 
-{% block nav-sidebar %}{% endblock %}
-{# Django's breadcrumbs go: the tiers say group and list, and below a list the pages row ends with the object. #}
-{% block nav-breadcrumbs %}{% endblock %}
+{# With tiers, Django's breadcrumbs go: the tiers say group and list, and below a list the pages row ends with the object. #}
+{% block nav-breadcrumbs %}{% if is_nav_sidebar_enabled %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block header %}{% if has_permission %}
 <header data-admin-header style="--d:grid; --g:.75rem; --p:1rem 1rem 0; --p-md:1rem 2rem 0; --bg:var(--background);">
@@ -84,18 +98,18 @@ own dark palette: the kit's tokens do not flip for "auto".
     </a>
     {% block usertools %}
     <div id="user-tools" style="--ml:auto; --d:flex; --fw:wrap; --ai:center; --g:.25rem .6rem; --m:0; --p:0;">
-      {% block welcome-msg %}<span style="--d:none; --d-md:inline;">{% translate 'Welcome,' %} <strong>{% firstof user.get_short_name user.get_username %}</strong>.</span>{% endblock %}
+      {% block welcome-msg %}<span class="welcome">{% translate 'Welcome,' %} <strong>{% firstof user.get_short_name user.get_username %}</strong>.</span>{% endblock %}
       {% block userlinks %}
         {% if site_url %}<a href="{{ site_url }}">{% translate 'View site' %}</a> /{% endif %}
         {% if user.is_active and user.is_staff %}{% url 'django-admindocs-docroot' as docsroot %}{% if docsroot %}<a href="{{ docsroot }}">{% translate 'Documentation' %}</a> /{% endif %}{% endif %}
         {% if user.has_usable_password %}<a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a> /{% endif %}
         <form id="logout-form" method="post" action="{% url 'admin:logout' %}">{% csrf_token %}<button type="submit">{% translate 'Log out' %}</button></form>
-        {% include "admin/color_theme_toggle.html" %}
       {% endblock %}
     </div>
     {% endblock %}
   </div>
-  {% block nav-global %}{% if not is_popup %}{% startr_admin_nav %}{% endif %}{% endblock %}
+  {# Tiers when the sidebar is off, the sidebar when it is on: one nav either way. #}
+  {% block nav-global %}{% if not is_popup and not is_nav_sidebar_enabled %}{% startr_admin_nav %}{% endif %}{% endblock %}
 </header>
 {% endif %}{% endblock %}
 

@@ -141,13 +141,13 @@ env_check:
 # the failure this refuses to let back in.
 pkg_check:
 	@fail=0; \
-	for d in django_startr django_startr/management django_startr/management/commands django_startr/templatetags; do \
+	for d in django_startr django_startr/admin_skin django_startr/management django_startr/management/commands django_startr/templatetags; do \
 	  if [ ! -f "$$d/__init__.py" ]; then echo "MISSING: $$d/__init__.py"; fail=1; \
 	  else echo "ok  init      $$d/__init__.py"; fi; \
 	done; \
 	found=$$($(PY) -c "from setuptools import find_packages; print(len(find_packages(include=['django_startr','django_startr.*'])))" 2>/dev/null); \
-	if [ "$$found" != "4" ]; then echo "FAIL: find_packages sees $$found packages, expected 4"; fail=1; \
-	else echo "ok  packages  find_packages sees 4"; fi; \
+	if [ "$$found" != "5" ]; then echo "FAIL: find_packages sees $$found packages, expected 5"; fail=1; \
+	else echo "ok  packages  find_packages sees 5"; fi; \
 	exit $$fail
 
 # The migration gate. Once the stubs are Jinja2 there must be no DTL escaping

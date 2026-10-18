@@ -4,10 +4,10 @@ This package enhances Django admin select fields with smart filtering capabiliti
 
 ## Features
 
-- Converts all select fields in the Django admin to smart select fields
+- Converts the select fields in the Django admin to smart select fields, when you opt in
 - Provides real-time filtering as you type
 - Maintains all original select field functionality
-- Works with all Django admin select fields automatically
+- Gives the filter box the select's label, so a screen reader still hears the field's name
 
 ## Installation
 
@@ -34,7 +34,13 @@ for key, value in settings_dict.items():
 
 ## Usage
 
-Once installed, all select fields in your Django admin will automatically be converted to smart select fields. No additional configuration is needed.
+Smart select is off by default. It swaps every single `<select>` in the admin for a text box, the changelist's action menu included, so a project chooses it. Turn it on in settings.py:
+
+```python
+STARTR_ADMIN_SMART_SELECT = True
+```
+
+Smart select ships with the admin skin, which has its own install order: `django_startr.admin_skin` before `django.contrib.admin`, `django_startr` after it. See the main README, "The admin skin".
 
 ## Customization
 

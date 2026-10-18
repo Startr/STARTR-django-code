@@ -33,6 +33,8 @@ INSTALLED_APPS = [
 ]
 ```
 
+The Django admin skin is a second app with its own place in the list. See [The admin skin](#the-admin-skin).
+
 ### Basic Usage
 
 1. Create your Django app and define your models:
@@ -192,6 +194,32 @@ class ProductAdmin(admin.ModelAdmin):
 ```
 
 The admin is named "Startr Admin" in its header and browser title. Set `STARTR_ADMIN_TITLE` in settings to use another name. A project that names its own admin keeps that name, whether it sets `admin.site.site_header` or uses an `AdminSite` subclass.
+
+### The admin skin
+
+The skin restyles the admin from startr.style's tokens and replaces Django's sidebar with the apps and models as tiers in the header. It lives in its own app, `django_startr.admin_skin`, because it must sit in a different place in `INSTALLED_APPS` than the rest of the package. Django serves a template from the first app that has it.
+
+```python
+INSTALLED_APPS = [
+    "django_startr.admin_skin",   # before the admin: its admin/base_site.html and admin/login.html must win
+    "django.contrib.admin",
+    # ...
+    "django_startr",              # after it: its base.html and registration/*.html must not shadow the admin's own
+]
+```
+
+Put `django_startr` ahead of the admin and Log out answers 500, because the package's generic `registration/logged_out.html` reverses a `login` route most projects lack.
+
+Django's sidebar goes only when the skin's `admin/base_site.html` is the one served. If your project overrides that template, or lists the skin after the admin, the sidebar stays and `manage.py check` says so (`startr.W001`). It also warns when the template engine lacks `django.template.context_processors.request` (`startr.W002`), since the tiers could not mark the current page.
+
+| Setting | Meaning |
+| --- | --- |
+| `STARTR_ADMIN_TITLE` | The admin's name. Default "Startr Admin". |
+| `STARTR_ADMIN_NAV` | Default `True`. `False` keeps Django's sidebar and breadcrumbs and draws no tiers. A custom `AdminSite` gets tiers by setting `enable_nav_sidebar = False`. |
+| `STARTR_ADMIN_SMART_SELECT` | Default `False`. `True` turns every single `<select>` in the admin into a type-to-filter box. |
+| `STARTR_STYLE_URL` | The kit's stylesheet: a full URL, or a static path for a vendored copy. |
+
+The skin owns the theme. Django's own dark mode and theme toggle are left out, so the admin follows the project's kit theme: light unless the page sets `data-theme="dark"`.
 
 ## 🧭 Nav, columns and read-only models
 

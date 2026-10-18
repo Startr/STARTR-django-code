@@ -3,8 +3,9 @@
 The admin is named "Startr Admin" unless the project named it: a title set
 on the site (``admin.site.site_header = ...``) or on an AdminSite subclass is
 left alone, and ``STARTR_ADMIN_TITLE`` changes the default for one project.
-The admin's sidebar goes, because the header carries the nav as tiers
-(templates/admin/base_site.html); ``STARTR_ADMIN_NAV = False`` keeps Django's.
+The look of the admin, and its sidebar swap for tiers, belong to
+``django_startr.admin_skin``, which sits elsewhere in INSTALLED_APPS: before
+``django.contrib.admin``, where this app goes after it (see admin_skin/apps.py).
 """
 from django.apps import AppConfig, apps
 from django.conf import settings
@@ -33,5 +34,3 @@ class DjangoStartrConfig(AppConfig):
             from django.contrib import admin
 
             brand_admin(admin.site, getattr(settings, "STARTR_ADMIN_TITLE", DEFAULT_ADMIN_TITLE))
-            if getattr(settings, "STARTR_ADMIN_NAV", True):
-                admin.site.enable_nav_sidebar = False

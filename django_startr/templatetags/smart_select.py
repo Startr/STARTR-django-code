@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.utils.safestring import mark_safe
 
 register = template.Library()
@@ -6,8 +7,14 @@ register = template.Library()
 @register.simple_tag
 def smart_select_js():
     """
-    Returns the JavaScript code for smart select functionality.
+    Returns the JavaScript code for smart select functionality, or nothing.
+
+    Opt-in: ``STARTR_ADMIN_SMART_SELECT = True``. It swaps every single
+    ``<select>`` on the page for a text box with a list (the changelist's
+    action menu included), which a project should choose rather than inherit.
     """
+    if not getattr(settings, "STARTR_ADMIN_SMART_SELECT", False):
+        return ""
     return mark_safe("""
     <script>
     function convertSelectToSmartSelect(originalSelect) {
@@ -30,8 +37,19 @@ def smart_select_js():
         input.setAttribute('autocomplete', 'off');
         input.className = 'smart-select-input';
 
+        // The box takes over the select's name: the field's <label for> follows it,
+        // and a select without a label keeps whatever name it already had.
+        const label = originalSelect.id && document.querySelector('label[for="' + originalSelect.id + '"]');
+        if (label) {
+            input.id = originalSelect.id + '_filter';
+            label.htmlFor = input.id;
+        } else {
+            input.setAttribute('aria-label', originalSelect.getAttribute('aria-label') || originalSelect.name || input.placeholder);
+        }
+
         const list = document.createElement('ul');
         list.className = 'smart-options';
+        list.setAttribute('role', 'listbox');
         list.style.display = 'none';  // Ensure hidden by default
         list.style.position = 'absolute';
         list.style.zIndex = '1001';
@@ -49,6 +67,7 @@ def smart_select_js():
                 const li = document.createElement('li');
                 li.textContent = option.textContent;
                 li.dataset.value = option.value;
+                li.setAttribute('role', 'option');
                 
                 li.addEventListener('click', () => {
                     input.value = option.textContent;

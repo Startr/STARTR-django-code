@@ -24,6 +24,19 @@ except ImportError:
     HAS_DJANGO = False
 
 
+#: The admin's engine as a project sets it up. A test that changes TEMPLATES
+#: starts from this, so a missing piece is the piece the test removed.
+DJANGO_ENGINE = {
+    "BACKEND": "django.template.backends.django.DjangoTemplates",
+    "DIRS": [],
+    "APP_DIRS": True,
+    "OPTIONS": {"context_processors": [
+        "django.template.context_processors.request",
+        "django.contrib.auth.context_processors.auth",
+    ]},
+}
+
+
 def configure_django():
     """One settings.configure for the whole suite, done at import.
 
@@ -39,13 +52,18 @@ def configure_django():
             USE_TZ=True,
             DATABASES={},
             ROOT_URLCONF="django_startr.tests",
-            INSTALLED_APPS=["django_startr"],
-            # The navs render through Django templates (startr/nav_*.html).
-            TEMPLATES=[{
-                "BACKEND": "django.template.backends.django.DjangoTemplates",
-                "APP_DIRS": True,
-                "OPTIONS": {"context_processors": ["django.template.context_processors.request"]},
-            }],
+            # The install order the admin skin documents: the skin before the admin
+            # (it must win admin/base_site.html), django_startr after it (its
+            # generic registration/*.html must not shadow the admin's own).
+            INSTALLED_APPS=[
+                "django_startr.admin_skin",
+                "django.contrib.contenttypes",
+                "django.contrib.auth",
+                "django.contrib.admin",
+                "django.contrib.messages",
+                "django_startr",
+            ],
+            TEMPLATES=[DJANGO_ENGINE],
             STATIC_URL="/static/",
         )
         django.setup()
@@ -953,3 +971,145 @@ class NavRenderTest(unittest.TestCase):
         self.assertIn("data-dock", context["startr_nav_html"]("dock"))
         self.assertIn("data-tiers", context["startr_nav_html"]("tiers"))
         self.assertTrue(any(item["current"] for item in context["startr_nav"]))
+
+
+@unittest.skipUnless(STANDALONE, "not this package's own settings; run make test here")
+class AdminSkinTest(unittest.TestCase):
+    """The admin overrides live in django_startr.admin_skin, listed before the admin.
+
+    Listed ahead of ``django.contrib.admin``, ``django_startr`` also put its
+    generic ``registration/logged_out.html`` (which reverses a 'login' route)
+    ahead of the admin's own, and Log out answered 500. The skin is an app of
+    its own so that ``django_startr`` can sit after the admin.
+    """
+
+    def setUp(self):
+        from django.contrib.admin import AdminSite
+        from django.contrib.auth.models import User
+        from django.test import RequestFactory
+        from django.urls import set_urlconf
+
+        self.site = AdminSite(name="admin")
+        self.site.register(Widget)
+        site = self.site
+
+        class Urls:
+            urlpatterns = [path("admin/", site.urls)]
+
+        set_urlconf(Urls)
+        self.addCleanup(set_urlconf, None)
+        self.request = RequestFactory().get("/admin/django_startr/widget/")
+        self.request.user = User(username="root", is_active=True, is_staff=True, is_superuser=True)
+
+    def page(self, site=None):
+        from django.template.loader import render_to_string
+        site = site or self.site
+        return render_to_string("admin/base_site.html", {**site.each_context(self.request), "title": "Widgets"}, request=self.request)
+
+    def _site(self):
+        from django.contrib.admin import AdminSite
+        site = AdminSite(name="admin")
+        site.register(Widget)
+        return site
+
+    def test_the_skin_is_served_ahead_of_the_admin_and_the_admin_wins_the_rest(self):
+        from pathlib import Path
+        from django.template.loader import get_template
+        skin = Path(__file__).parent / "admin_skin"
+        for name in ("admin/base_site.html", "admin/login.html"):
+            self.assertTrue(Path(get_template(name).origin.name).resolve().is_relative_to(skin.resolve()), name)
+        for name in ("registration/logged_out.html", "registration/password_change_form.html"):
+            self.assertIn("django/contrib/admin", get_template(name).origin.name.replace("\\", "/"), name)
+
+    def test_with_the_sidebar_off_the_header_carries_the_tiers(self):
+        self.site.enable_nav_sidebar = False
+        html = self.page()
+        self.assertIn("<nav data-tiers", html)
+        self.assertNotIn('id="nav-sidebar"', html)
+        self.assertNotIn('class="breadcrumbs"', html)
+
+    def test_with_the_sidebar_on_django_keeps_its_own_nav_and_the_tiers_stay_out(self):
+        """The header shows tiers exactly when the sidebar is off: one nav, never two or none."""
+        self.site.enable_nav_sidebar = True
+        html = self.page()
+        self.assertIn('id="nav-sidebar"', html)
+        self.assertIn('class="breadcrumbs"', html)
+        self.assertNotIn("data-tiers", html)
+
+    def test_the_sidebar_goes_when_the_skin_is_served_and_STARTR_ADMIN_NAV_is_on(self):
+        from django.test import override_settings
+        from .admin_skin.apps import apply_skin
+        site = self._site()
+        apply_skin(site)
+        self.assertFalse(site.enable_nav_sidebar)
+        with override_settings(STARTR_ADMIN_NAV=False):
+            site = self._site()
+            apply_skin(site)
+            self.assertTrue(site.enable_nav_sidebar)
+            html = self.page(site)
+        self.assertIn('id="nav-sidebar"', html)
+        self.assertNotIn("data-tiers", html)
+
+    def test_a_project_override_of_base_site_keeps_the_sidebar_and_is_reported(self):
+        import tempfile
+        from pathlib import Path
+        from django.test import override_settings
+        from .admin_skin.apps import apply_skin
+        from .admin_skin.checks import check_admin_skin
+        self.assertEqual(check_admin_skin(None), [])
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "admin").mkdir()
+            (Path(tmp) / "admin" / "base_site.html").write_text('{% extends "admin/base.html" %}')
+            with override_settings(TEMPLATES=[dict(DJANGO_ENGINE, DIRS=[tmp])]):
+                site = self._site()
+                apply_skin(site)
+                self.assertTrue(site.enable_nav_sidebar)
+                warnings = check_admin_skin(None)
+        self.assertEqual([w.id for w in warnings], ["startr.W001"])
+        self.assertIn("django_startr.admin_skin", warnings[0].hint)
+
+    def test_the_request_context_processor_is_checked_because_the_sidebar_check_goes_quiet(self):
+        """Django's admin.W411 warns about the request processor only while its
+        sidebar is on; the skin turns the sidebar off, so startr.W002 speaks."""
+        from django.test import override_settings
+        from .admin_skin.checks import check_admin_skin
+        bare = dict(DJANGO_ENGINE, OPTIONS={"context_processors": ["django.contrib.auth.context_processors.auth"]})
+        with override_settings(TEMPLATES=[bare]):
+            self.assertEqual([w.id for w in check_admin_skin(None)], ["startr.W002"])
+            with override_settings(STARTR_ADMIN_NAV=False):
+                self.assertEqual(check_admin_skin(None), [])
+
+    def test_the_skin_owns_the_theme(self):
+        """Django's dark_mode.css and theme.js, and the toggle that drives them,
+        wrote their palettes over the kit's tokens: a click left the stock
+        blue admin. The page loads neither, and the map covers every explicit theme."""
+        self.site.enable_nav_sidebar = False
+        html = self.page()
+        for gone in ("dark_mode.css", "theme.js", "theme-toggle", "color_theme_toggle"):
+            self.assertNotIn(gone, html)
+        self.assertIn(":root, html[data-theme] {", html)
+        self.assertIn('html[data-theme="dark"] { color-scheme: dark; }', html)
+
+    def test_module_headings_paint_the_same_on_django_4_and_5(self):
+        """4.2 paints `.module h2` on --primary and 5.2 on --header-bg; the kit
+        text colour on the kit primary was unreadable on 4.2."""
+        self.assertIn(".module h2, .module caption, .inline-group h2 { background: var(--header-bg); color: var(--header-link-color); }", self.page())
+
+    def test_the_signed_in_name_is_hidden_to_the_eye_not_to_the_screen_reader(self):
+        html = self.page()
+        self.assertIn('<span class="welcome">', html)
+        self.assertIn("root", html.split('class="welcome"', 1)[1].split("</span>", 1)[0])
+        self.assertNotIn("--d:none", html.split("<header", 1)[1].split("</header>", 1)[0])
+        self.assertIn("#user-tools .welcome { position: absolute;", html)
+
+    def test_smart_select_is_opt_in_and_names_its_input(self):
+        from django.test import override_settings
+        from .templatetags.smart_select import smart_select_js
+        self.assertEqual(smart_select_js(), "")
+        self.assertNotIn("convertSelectToSmartSelect", self.page())
+        with override_settings(STARTR_ADMIN_SMART_SELECT=True):
+            script = smart_select_js()
+            self.assertIn("convertSelectToSmartSelect", self.page())
+        self.assertIn("label[for=", script)
+        self.assertIn("label.htmlFor = input.id", script)
+        self.assertIn("aria-label", script)
