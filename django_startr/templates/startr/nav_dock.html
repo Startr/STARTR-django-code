@@ -15,7 +15,7 @@ for a Django or a Jinja shell alike.
     {% for item in items %}{% if item.primary %}
     <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="{{ item_s }} --fx:1; --d:{% if item in dock %}flex{% else %}none{% endif %}; --d-md:flex; --o:{{ item.dock_order }}; --o-md:0;">{% nav_icon item icon_s %}<span>{{ item.label }}</span></a>
     {% endif %}{% endfor %}
-    <details data-dock-more style="{{ reset_s }} --px:0; --pos:relative; --fx:1; --d:flex; --fx-md:0 0 auto;">
+    <details data-dock-more style="{{ reset_s }} --px:0; --pos:relative; --fx:1; --d:flex; --fx-md:0 0 auto; --o:99; --o-md:0;{% if not sheet %} --d:none;{% endif %}{% if not sheet_md %} --d-md:none;{% endif %}">
       <summary style="{{ reset_s }} {{ item_s }} --d:flex; --h:100%; --w:100%; --p:0 .5rem; --cur:pointer; --ls:none;">{% nav_icon more icon_s %}<span data-label="More">More</span></summary>
       <div style="--pos:fixed; --left:0; --right:0; --bottom:76px; --z:60; --bg:var(--background); --bt:1px solid var(--border); --radius:1rem 1rem 0 0; --boxs:0 -12px 30px rgba(0, 0, 0, .12); --p:1rem 1rem 1.25rem; --d:grid; --gtc:repeat(2, minmax(0, 1fr)); --g:.25rem 1rem; --pos-md:absolute; --top-md:calc(100% + .5rem); --right-md:0; --bottom-md:auto; --left-md:auto; --minw-md:14rem; --radius-md:.75rem; --gtc-md:1fr; --boxs-md:0 12px 30px rgba(0, 0, 0, .15);">
         {% for item in sheet %}

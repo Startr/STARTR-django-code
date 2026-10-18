@@ -1,0 +1,36 @@
+{% load static startr_nav %}{% comment %}
+The user menu: the signed-in person's initials, top right, opening on their
+name, the back office and Log out. The back office is what the dock and More
+leave out (django_startr.nav.menu_items): the project's staff-only extras
+first, such as the admin, then its internal pages grouped by app. A plain
+<details>, so it works with JavaScript off; nav-user.js closes it on Escape,
+on a click outside and after a link is followed. The shell places it (e.g. a
+wrapper with --ml:auto); looks are inline props with kit tokens.
+{% endcomment %}{% if user_name %}{% with link_s="--d:flex; --ai:center; --g:.6rem; --p:.45rem .6rem; --radius:.5rem; --c:var(--text-main); --c-on:var(--primary); --bg-hover:var(--primary-tint); --bg-on:var(--primary-tint); --oe-focus:2px solid var(--primary); --oo:-2px; --size:.9rem; text-decoration:none;" muted="color-mix(in srgb, var(--text-main) 70%, var(--background))" %}
+<details data-user-menu style="--pos:relative; --m:0; --p:0; --b:0; --bg:transparent; --radius:0;">
+  <summary aria-label="Account: {{ user_name }}" title="{{ user_name }}" style="--d:inline-flex; --ai:center; --jc:center; --w:36px; --h:36px; --m:0; --p:0; --b:0; --radius:50%; --bg:linear-gradient(135deg, var(--primary), var(--secondary)); --c:var(--color-7); --size:.8rem; --weight:700; --ls:none; --cur:pointer; --oe-focus:2px solid var(--primary); --oo:2px;">{{ user_initials }}</summary>
+  <div style="--pos:absolute; --top:calc(100% + .5rem); --right:0; --z:70; --w:17rem; --maxw:calc(100vw - 2rem); --maxh:calc(100dvh - 8rem); --of:auto; --d:grid; --g:.15rem; --p:.5rem; --bg:var(--background); --b:1px solid var(--border); --radius:.75rem; --boxs:0 12px 30px rgba(0, 0, 0, .15);">
+    {# The name and Log out stay put while a long back office scrolls between them. #}
+    <div style="--pos:sticky; --top:-.5rem; --z:1; --bg:var(--background); --p:.4rem .6rem .6rem; --mb:.25rem; --bb:1px solid var(--border);">
+      <strong style="--d:block; --size:.95rem;">{{ user_name }}</strong>
+      {% if user_email %}<span style="--d:block; --size:.8rem; --c:{{ muted }};">{{ user_email }}</span>{% endif %}
+    </div>
+    {% for item in top %}
+    <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="{{ link_s }}">{% nav_icon item %}<span>{{ item.label }}</span></a>
+    {% endfor %}
+    {% for label, members in groups %}
+    <p style="--m:.6rem 0 .1rem; --p:0 .6rem; --size:.72rem; --weight:600; --tt:uppercase; --ls:.06em; --c:{{ muted }};">{{ label }}</p>
+    {% for item in members %}
+    <a href="{{ item.url }}" data-swap-target="main"{% if item.current %} aria-current="page"{% endif %} style="{{ link_s }}">{% nav_icon item %}<span>{{ item.label }}</span></a>
+    {% endfor %}
+    {% endfor %}
+    {% if logout_url %}
+    <form method="post" action="{{ logout_url }}" data-swap-off style="--pos:sticky; --bottom:-.5rem; --z:1; --bg:var(--background); --m:.25rem 0 0; --p:.4rem 0 .5rem; --bt:1px solid var(--border);">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token_value }}">
+      <button type="submit" style="--w:100%; --m:0; --p:.45rem .6rem; --ta:left; --bg:transparent; --c:var(--text-main); --b:0; --radius:.5rem; --bg-hover:var(--primary-tint); --oe-focus:2px solid var(--primary); --size:.9rem;">Log out</button>
+    </form>
+    {% endif %}
+  </div>
+  <script defer src="{% static 'django_startr/nav-user.js' %}"></script>
+</details>
+{% endwith %}{% endif %}

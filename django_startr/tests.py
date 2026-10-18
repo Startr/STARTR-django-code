@@ -972,6 +972,82 @@ class NavRenderTest(unittest.TestCase):
         self.assertIn("data-tiers", context["startr_nav_html"]("tiers"))
         self.assertTrue(any(item["current"] for item in context["startr_nav"]))
 
+    @staticmethod
+    def _person(name="Ada Lovelace", email="ada@example.com"):
+        class Person:
+            is_authenticated = True
+            def get_full_name(self):
+                return name
+            def get_username(self):
+                return email
+            def has_perm(self, perm):
+                return True
+        person = Person()
+        person.email = email
+        return person
+
+    @staticmethod
+    def _settings_extra():
+        return {"slug": "admin:index", "name": "admin:index", "url": "/admin/", "label": "Settings", "primary": True, "extra": True, "staff": True}
+
+    def test_the_back_office_goes_to_the_user_menu_not_the_dock(self):
+        """Pages that are not primary and extras only staff may open are the back
+        office: they leave the dock and More for the user menu (Alexander,
+        2026-10-18: keep people out unless they need in)."""
+        items = self._items(skip_primary=(2, 5)) + [self._settings_extra()]
+        self.assertEqual([item["url"] for item in self.nav.menu_items(items)], ["/2/", "/5/", "/admin/"])
+        html = self.nav.render_nav(self._request(), "dock", items=items)
+        for url in ("/2/", "/5/", "/admin/"):
+            self.assertNotIn(f'href="{url}"', html)
+        self.assertIn('href="/4/"', html)  # primary and not in the dock: More's sheet
+
+    def test_a_dock_page_never_moves_to_the_menu_and_the_setting_names_it(self):
+        from django.test import override_settings
+        items = self._items()
+        with override_settings(STARTR_NAV_DOCK=["s0", "s2"]):
+            self.assertNotIn("/2/", [item["url"] for item in self.nav.menu_items(items)])
+        # The default dock is s0, s1, s3, s4. The setting moves a primary page
+        # too (s5), and still never a dock page (s1).
+        with override_settings(STARTR_NAV_MENU=["s5", "n2", "s1"]):
+            self.assertEqual([item["url"] for item in self.nav.menu_items(self._items())], ["/2/", "/5/"])
+
+    def test_the_user_menu_shows_the_person_the_back_office_and_log_out(self):
+        from unittest import mock
+        request = self._request()
+        request.user = self._person()
+        items = self._items(skip_primary=(2,)) + [self._settings_extra()]
+        with mock.patch.object(self.nav, "reverse", side_effect=lambda name: "/out/" if name == "logout" else "/x/"):
+            html = self.nav.render_nav(request, "user", items=items)
+        self.assertIn("data-user-menu", html)
+        self.assertIn(">AL</summary>", html)
+        self.assertIn('aria-label="Account: Ada Lovelace"', html)
+        self.assertIn("ada@example.com", html)
+        self.assertLess(html.index('href="/admin/"'), html.index('href="/2/"'))  # staff extras first
+        self.assertIn('action="/out/"', html)
+        self.assertIn('name="csrfmiddlewaretoken"', html)
+        self.assertNotIn('href="/0/"', html)  # an everyday page stays in the dock
+
+    def test_no_user_menu_for_an_anonymous_viewer_and_no_form_without_a_logout_route(self):
+        self.assertEqual(self.nav.render_nav(self._request(), "user", items=self._items()).strip(), "")
+        request = self._request()
+        request.user = self._person()
+        from django.urls import NoReverseMatch
+        from unittest import mock
+        with mock.patch.object(self.nav, "reverse", side_effect=NoReverseMatch("none")):
+            html = self.nav.render_nav(request, "user", items=self._items())
+        self.assertIn("data-user-menu", html)
+        self.assertNotIn("<form", html)
+
+    def test_more_sits_last_and_hides_where_it_has_nothing_to_add(self):
+        import re
+        more = lambda html: re.search(r'<details data-dock-more style="([^"]*)"', html).group(1)
+        four = self.nav.render_nav(self._request(), "dock", items=self._items(n=4, skip_primary=()))
+        self.assertIn("--o:99;", more(four))
+        self.assertTrue(more(four).rstrip().endswith("--d:none; --d-md:none;"))  # all four in the dock
+        five = self.nav.render_nav(self._request(), "dock", items=self._items(n=5, skip_primary=()))
+        self.assertNotIn(" --d:none;", more(five))  # the fifth page needs More on a phone
+        self.assertIn("--d-md:none;", more(five))  # a desktop bar already shows it
+
     def test_a_dock_page_that_is_not_primary_still_gets_a_link(self):
         """STARTR_NAV_ORDER names two pages and STARTR_NAV_DOCK a third. The bar
         draws primary pages and the sheet skips dock members, so the third had

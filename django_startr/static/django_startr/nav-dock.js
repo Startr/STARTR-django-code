@@ -26,14 +26,20 @@
   let raf = 0;
 
   const bar = (W) => `M${r} 0H${W - r}Q${W} 0 ${W} ${r}V${H - r}Q${W} ${H} ${W - r} ${H}H${r}Q0 ${H} 0 ${H - r}V${r}Q0 0 ${r} 0Z`;
-  // The shoulders stop at the corners, so a cavity near either end of the bar
-  // (the first phone item's centre is about 45px in) never runs past them.
+  // Near either end of the bar (a phone's first item centres about 45px in)
+  // the cavity and a full corner do not both fit: the shoulder would start
+  // inside the corner's curve and the outline would fold back on itself. So
+  // the top corner on that side gives way, its radius shrinking to the room
+  // left, down to square, and grows back as the cavity moves off.
   const barWithCavity = (W, x) => {
-    const left = Math.max(x - R - s, r);
-    const right = Math.min(x + R + s, W - r);
+    x = Math.min(Math.max(x, R + 4), W - R - 4);
+    const rl = Math.min(r, Math.max(0, x - R - s));
+    const rr = Math.min(r, Math.max(0, W - x - R - s));
+    const left = Math.max(x - R - s, rl);
+    const right = Math.min(x + R + s, W - rr);
     return (
-      `M${r} 0L${left} 0Q${x - R} 0 ${x - R + 4} 10A${R} ${R} 0 0 0 ${x + R - 4} 10Q${x + R} 0 ${right} 0` +
-      `L${W - r} 0Q${W} 0 ${W} ${r}V${H - r}Q${W} ${H} ${W - r} ${H}H${r}Q0 ${H} 0 ${H - r}V${r}Q0 0 ${r} 0Z`
+      `M${rl} 0L${left} 0Q${x - R} 0 ${x - R + 4} 10A${R} ${R} 0 0 0 ${x + R - 4} 10Q${x + R} 0 ${right} 0` +
+      `L${W - rr} 0Q${W} 0 ${W} ${rr}V${H - r}Q${W} ${H} ${W - r} ${H}H${r}Q0 ${H} 0 ${H - r}V${rl}Q0 0 ${rl} 0Z`
     );
   };
 

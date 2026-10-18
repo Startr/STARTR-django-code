@@ -54,6 +54,9 @@ Settings, all optional:
                       requirement is a permission string, or one of
                       ``is_authenticated`` / ``is_staff`` / ``is_superuser``.
 ``STARTR_NAV_ANON``   default ``True``; ``False`` drops the anonymous pass
+``STARTR_NAV_MENU``   slugs (or route names) for the user menu, the back office
+                      kept out of the dock and More. Unset: every page that is
+                      not primary, and every extra only staff may open
 ``STARTR_NAV_PRIMARY`` slugs (or route names) that belong in the main nav; see
                       below
 
@@ -293,6 +296,8 @@ def nav_items(request):
         items.append({
             "name": name, "slug": name, "url": url, "label": label,
             "primary": (name in primary) if primary else True,
+            "extra": True,
+            "staff": requirement in ("is_staff", "is_superuser"),
         })
 
     return items
@@ -368,6 +373,51 @@ def dock_items(items):
     for item in items:
         item["dock_order"] = dock.index(item) if item in dock else 99
     return dock
+
+
+def menu_items(items):
+    """The back office, for the user menu: pages the dock and More leave out.
+
+    ``STARTR_NAV_MENU`` names them (slugs or route names). Unset, every page
+    that is not primary (a project's internal model pages) and every extra
+    only staff may open, such as the admin. A dock page never moves here.
+    """
+    dock = dock_items(items)
+    keys = getattr(settings, "STARTR_NAV_MENU", None)
+    if keys is not None:
+        wanted = lambda item: item["slug"] in keys or item["name"] in keys
+    else:
+        wanted = lambda item: not item["primary"] or item.get("staff")
+    return [item for item in items if item not in dock and wanted(item)]
+
+
+def user_context(request):
+    """Who is signed in, for the user menu: name, email, initials, a log-out form."""
+    import re
+
+    from django.middleware.csrf import get_token
+
+    user = getattr(request, "user", None)
+    if not getattr(user, "is_authenticated", False):
+        return {"user_name": None}
+    name = (user.get_full_name() or user.get_username()).strip()
+    words = [w for w in re.split(r"[^0-9A-Za-z]+", name.split("@")[0]) if w]
+    initials = "".join(w[0] for w in words[:2]).upper() or "?"
+    email = getattr(user, "email", "") or ""
+    logout_url = None
+    for route in ("logout", "admin:logout"):
+        try:
+            logout_url = reverse(route)
+            break
+        except NoReverseMatch:
+            continue
+    return {
+        "user_name": name,
+        "user_email": email if email and email != name else "",
+        "user_initials": initials,
+        "logout_url": logout_url,
+        "csrf_token_value": get_token(request) if logout_url else "",
+    }
 
 
 def _app_name(item):
@@ -463,7 +513,7 @@ def _engine():
 
 
 def render_nav(request, kind="dock", items=None, groups=None, tail=None):
-    """The nav as HTML, from ``startr/nav_<kind>.html``: ``dock`` or ``tiers``.
+    """The nav as HTML, from ``startr/nav_<kind>.html``: ``dock``, ``tiers`` or ``user``.
 
     A Django template renders it, through the package's own engine, so the
     admin and a Jinja shell share one source whatever the project's TEMPLATES
@@ -478,8 +528,17 @@ def render_nav(request, kind="dock", items=None, groups=None, tail=None):
     context = {"items": items, "path": path, "kind": kind, "tail": tail, "more": {"slug": "more", "name": "more", "label": "More"}}
     if kind == "dock":
         dock = dock_items(items)
+        menu = menu_items(items)
+        context["items"] = [item for item in items if item not in menu]
         context["dock"] = dock
-        context["sheet"] = sorted((item for item in items if item not in dock), key=lambda item: not item["primary"])
+        context["sheet"] = sorted((item for item in context["items"] if item not in dock), key=lambda item: not item["primary"])
+        # A desktop bar shows every primary page, so More adds only the rest.
+        context["sheet_md"] = any(not item["primary"] for item in context["sheet"])
+    elif kind == "user":
+        menu = menu_items(items)
+        context.update(user_context(request))
+        context["top"] = [item for item in menu if item.get("extra")]
+        context["groups"] = nav_groups([item for item in menu if not item.get("extra")])
     else:
         context["groups"] = groups if groups is not None else nav_groups(items)
         current = next((label for label, members in context["groups"] if any(m["current"] for m in members)), None)
