@@ -3,7 +3,8 @@
 // link into #split-pane, Back is a swap of main) and the server renders the
 // state (data-on on the split, aria-current on the open row). This script only
 // restores that state after a sub-swap, which replaces the pane's children and
-// nothing else: data-on, the current row, the title, focus. Looks live in the
+// nothing else: data-on, the current rows (aria-current on the link, data-on on
+// its [data-split-item] container), the title, focus. Looks live in the
 // template's inline props; the slide is the kit's --t-in-on. Without the
 // script every row is a plain link to the item's page.
 (() => {
@@ -13,9 +14,15 @@
     const open = pane && pane.querySelector("[data-pane]");
     split.toggleAttribute("data-on", Boolean(open));
     const here = new URL(url || location.href, location.href).href;
+    // An item can appear more than once (a card and a table row for one lead),
+    // so every row link is marked, and so is its [data-split-item] container
+    // when it has one: a <tr> cannot carry the link's aria-current.
     split.querySelectorAll("[data-split-row]").forEach((a) => {
-      if (a.href === here) a.setAttribute("aria-current", "page");
+      const current = a.href === here;
+      if (current) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
+      const item = a.closest("[data-split-item]");
+      if (item) item.toggleAttribute("data-on", current);
     });
     const title = open && open.querySelector("[data-pane-title]");
     if (!title) return;
