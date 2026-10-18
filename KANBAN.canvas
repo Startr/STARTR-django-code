@@ -15,24 +15,24 @@
       "children": [
         {
           "checked": false,
-          "line_num": 101,
+          "line_num": 113,
           "tags": [],
           "text": "WEB-Django: add a Jinja2 backend, regenerate `experiences`, move the pin"
         },
         {
           "checked": false,
-          "line_num": 102,
+          "line_num": 114,
           "tags": [],
           "text": "Publish `1.0.0` to PyPI once the gold test passes"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "8800a3d574a272c5",
-      "line_num": 100,
+      "id": "50cd43772ced3e78",
+      "line_num": 112,
       "source": "todo_md",
       "tags": [],
-      "text": "**Consumer upgrades: nothing is forced, submodule pins hold**\n- [ ] WEB-Django: add a Jinja2 backend, regenerate `experiences`, move the pin\n- [ ] Publish `1.0.0` to PyPI once the gold test passes\n\n`TODO.md:L100`",
+      "text": "**Consumer upgrades: nothing is forced, submodule pins hold**\n- [ ] WEB-Django: add a Jinja2 backend, regenerate `experiences`, move the pin\n- [ ] Publish `1.0.0` to PyPI once the gold test passes\n\n`TODO.md:L112`",
       "type": "text",
       "width": 280,
       "x": 10,
@@ -42,36 +42,36 @@
       "children": [
         {
           "checked": false,
-          "line_num": 105,
+          "line_num": 117,
           "tags": [],
           "text": "Emit startr.swap attributes \u2014 `data-swap` region, `data-swap-target`"
         },
         {
           "checked": false,
-          "line_num": 106,
+          "line_num": 118,
           "tags": [],
           "text": "Slim the views emitter, ~200 lines of pass-through `super()` overrides"
         },
         {
           "checked": false,
-          "line_num": 107,
+          "line_num": 119,
           "tags": [],
           "text": "Port `technical_4xx` / `registration` / `admin` runtime templates"
         },
         {
           "checked": false,
-          "line_num": 108,
+          "line_num": 120,
           "tags": [],
           "text": "`ui-` Sprig fragment variant, checked by `validate_ui_bundle`"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "b722a0c8d36ee9fb",
-      "line_num": 104,
+      "id": "9a74ebee92ff2699",
+      "line_num": 116,
       "source": "todo_md",
       "tags": [],
-      "text": "**Generator output improvements**\n- [ ] Emit startr.swap attributes \u2014 `data-swap` region, `data-swap-target`\n- [ ] Slim the views emitter, ~200 lines of pass-through `super()` overrides\n- [ ] Port `technical_4xx` / `registration` / `admin` runtime templates\n- [ ] `ui-` Sprig fragment variant, checked by `validate_ui_bundle`\n\n`TODO.md:L104`",
+      "text": "**Generator output improvements**\n- [ ] Emit startr.swap attributes \u2014 `data-swap` region, `data-swap-target`\n- [ ] Slim the views emitter, ~200 lines of pass-through `super()` overrides\n- [ ] Port `technical_4xx` / `registration` / `admin` runtime templates\n- [ ] `ui-` Sprig fragment variant, checked by `validate_ui_bundle`\n\n`TODO.md:L116`",
       "type": "text",
       "width": 280,
       "x": 10,
@@ -81,24 +81,24 @@
       "children": [
         {
           "checked": false,
-          "line_num": 111,
+          "line_num": 123,
           "tags": [],
           "text": "Small inline `<script>`, under 16 kB, no `src=`"
         },
         {
           "checked": false,
-          "line_num": 112,
+          "line_num": 124,
           "tags": [],
           "text": "Never hyperscript \u2014 refused whatever the admin grant says"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "7d239aec9f22f68d",
-      "line_num": 110,
+      "id": "28c41fd971970f0b",
+      "line_num": 122,
       "source": "todo_md",
       "tags": [],
-      "text": "**`--scripting` lane for audited Sprigs**\n- [ ] Small inline `<script>`, under 16 kB, no `src=`\n- [ ] Never hyperscript \u2014 refused whatever the admin grant says\n\n`TODO.md:L110`",
+      "text": "**`--scripting` lane for audited Sprigs**\n- [ ] Small inline `<script>`, under 16 kB, no `src=`\n- [ ] Never hyperscript \u2014 refused whatever the admin grant says\n\n`TODO.md:L122`",
       "type": "text",
       "width": 280,
       "x": 10,
@@ -108,24 +108,24 @@
       "children": [
         {
           "checked": false,
-          "line_num": 115,
+          "line_num": 127,
           "tags": [],
           "text": "Audit `summary`, `ins`/`del`, `dialog`, `output`, `progress`, `meter`, `abbr`"
         },
         {
           "checked": false,
-          "line_num": 116,
+          "line_num": 128,
           "tags": [],
           "text": "Fix only the gaps the generator actually hits"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "cf27ff632babd031",
-      "line_num": 114,
+      "id": "b495a690344e0e82",
+      "line_num": 126,
       "source": "todo_md",
       "tags": [],
-      "text": "**Upstream sweep: elements startr.style base does not cover**\n- [ ] Audit `summary`, `ins`/`del`, `dialog`, `output`, `progress`, `meter`, `abbr`\n- [ ] Fix only the gaps the generator actually hits\n\n`TODO.md:L114`",
+      "text": "**Upstream sweep: elements startr.style base does not cover**\n- [ ] Audit `summary`, `ins`/`del`, `dialog`, `output`, `progress`, `meter`, `abbr`\n- [ ] Fix only the gaps the generator actually hits\n\n`TODO.md:L126`",
       "type": "text",
       "width": 280,
       "x": 10,
@@ -144,30 +144,30 @@
       "children": [
         {
           "checked": false,
-          "line_num": 42,
+          "line_num": 54,
           "tags": [],
           "text": "`--dry-run` prints the plan, writes nothing"
         },
         {
           "checked": false,
-          "line_num": 43,
+          "line_num": 55,
           "tags": [],
           "text": "`--quiet`"
         },
         {
           "checked": false,
-          "line_num": 44,
+          "line_num": 56,
           "tags": [],
           "text": "`--prune` guards `remove_empty_startapp_files`, default OFF"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "b9c9e46d06714613",
-      "line_num": 41,
+      "id": "b92ef6eaeffbfa4e",
+      "line_num": 53,
       "source": "todo_md",
       "tags": [],
-      "text": "**CLI flags on `manage.py startr`**\n- [ ] `--dry-run` prints the plan, writes nothing\n- [ ] `--quiet`\n- [ ] `--prune` guards `remove_empty_startapp_files`, default OFF\n\n`TODO.md:L41`",
+      "text": "**CLI flags on `manage.py startr`**\n- [ ] `--dry-run` prints the plan, writes nothing\n- [ ] `--quiet`\n- [ ] `--prune` guards `remove_empty_startapp_files`, default OFF\n\n`TODO.md:L53`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -177,48 +177,48 @@
       "children": [
         {
           "checked": true,
-          "line_num": 48,
+          "line_num": 60,
           "tags": [],
           "text": "`form.as_p()` called not referenced; no `bound method` in output"
         },
         {
           "checked": true,
-          "line_num": 49,
+          "line_num": 61,
           "tags": [],
           "text": "No stub carries `templatetag`, `verbatim`, or an interpreted attribute"
         },
         {
           "checked": true,
-          "line_num": 50,
+          "line_num": 62,
           "tags": [],
           "text": "Every Python emitter renders to a module that `ast.parse` accepts"
         },
         {
           "checked": true,
-          "line_num": 51,
+          "line_num": 63,
           "tags": [],
           "text": "`StrictUndefined` fires on a mistyped meta variable"
         },
         {
           "checked": false,
-          "line_num": 52,
+          "line_num": 64,
           "tags": [],
           "text": "Re-run leaves every hand-written file byte-identical"
         },
         {
           "checked": false,
-          "line_num": 53,
+          "line_num": 65,
           "tags": [],
           "text": "`--dry-run` leaves a directory checksum unchanged"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "31514c7b144fc3c0",
-      "line_num": 47,
+      "id": "4175d316b55998f0",
+      "line_num": 59,
       "source": "todo_md",
       "tags": [],
-      "text": "**Test suite: 17 tests, all running under pipenv**\n- [x] `form.as_p()` called not referenced; no `bound method` in output\n- [x] No stub carries `templatetag`, `verbatim`, or an interpreted attribute\n- [x] Every Python emitter renders to a module that `ast.parse` accepts\n- [x] `StrictUndefined` fires on a mistyped meta variable\n- [ ] Re-run leaves every hand-written file byte-identical\n- [ ] `--dry-run` leaves a directory checksum unchanged\n\n`TODO.md:L47`",
+      "text": "**Test suite: 17 tests, all running under pipenv**\n- [x] `form.as_p()` called not referenced; no `bound method` in output\n- [x] No stub carries `templatetag`, `verbatim`, or an interpreted attribute\n- [x] Every Python emitter renders to a module that `ast.parse` accepts\n- [x] `StrictUndefined` fires on a mistyped meta variable\n- [ ] Re-run leaves every hand-written file byte-identical\n- [ ] `--dry-run` leaves a directory checksum unchanged\n\n`TODO.md:L59`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -228,36 +228,36 @@
       "children": [
         {
           "checked": true,
-          "line_num": 56,
+          "line_num": 68,
           "tags": [],
           "text": "All 5 generated pages render live, anon and authenticated \u2014 10/10 green"
         },
         {
           "checked": false,
-          "line_num": 57,
+          "line_num": 69,
           "tags": [],
           "text": "Run the real `startr crm:Party,Thread,Task,PartialLead --dry-run`"
         },
         {
           "checked": false,
-          "line_num": 58,
+          "line_num": 70,
           "tags": [],
           "text": "Generate for real against the container"
         },
         {
           "checked": false,
-          "line_num": 59,
+          "line_num": 71,
           "tags": [],
           "text": "Confirm hand-written `crm/views/leads.py` untouched"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "e0cf0c3d3c993bf1",
-      "line_num": 55,
+      "id": "7d5540fbd9b0b006",
+      "line_num": 67,
       "source": "todo_md",
       "tags": [],
-      "text": "**Gold test against reastate: generate the CRUD not yet hand-written**\n- [x] All 5 generated pages render live, anon and authenticated \u2014 10/10 green\n- [ ] Run the real `startr crm:Party,Thread,Task,PartialLead --dry-run`\n- [ ] Generate for real against the container\n- [ ] Confirm hand-written `crm/views/leads.py` untouched\n\n`TODO.md:L55`",
+      "text": "**Gold test against reastate: generate the CRUD not yet hand-written**\n- [x] All 5 generated pages render live, anon and authenticated \u2014 10/10 green\n- [ ] Run the real `startr crm:Party,Thread,Task,PartialLead --dry-run`\n- [ ] Generate for real against the container\n- [ ] Confirm hand-written `crm/views/leads.py` untouched\n\n`TODO.md:L67`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -267,36 +267,36 @@
       "children": [
         {
           "checked": true,
-          "line_num": 64,
+          "line_num": 76,
           "tags": [],
           "text": "`devnotes.py` \u2014 five callables, `DEBUG`-gated, no stylesheet"
         },
         {
           "checked": false,
-          "line_num": 65,
+          "line_num": 77,
           "tags": [],
           "text": "`DEBUG=False` renders zero bytes \u2014 the fail-closed gate"
         },
         {
           "checked": false,
-          "line_num": 66,
+          "line_num": 78,
           "tags": [],
           "text": "Markup carries no `style=` and no hex colour"
         },
         {
           "checked": false,
-          "line_num": 67,
+          "line_num": 79,
           "tags": [],
           "text": "`{% call todo() %}` paired form renders through a real backend"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "6e3613257f517f88",
-      "line_num": 63,
+      "id": "fecd77fb90fc04e2",
+      "line_num": 75,
       "source": "todo_md",
       "tags": [],
-      "text": "**Dev-notes tests: the module exists, the proof does not**\n- [x] `devnotes.py` \u2014 five callables, `DEBUG`-gated, no stylesheet\n- [ ] `DEBUG=False` renders zero bytes \u2014 the fail-closed gate\n- [ ] Markup carries no `style=` and no hex colour\n- [ ] `{% call todo() %}` paired form renders through a real backend\n\n`TODO.md:L63`",
+      "text": "**Dev-notes tests: the module exists, the proof does not**\n- [x] `devnotes.py` \u2014 five callables, `DEBUG`-gated, no stylesheet\n- [ ] `DEBUG=False` renders zero bytes \u2014 the fail-closed gate\n- [ ] Markup carries no `style=` and no hex colour\n- [ ] `{% call todo() %}` paired form renders through a real backend\n\n`TODO.md:L75`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -306,24 +306,24 @@
       "children": [
         {
           "checked": false,
-          "line_num": 70,
+          "line_num": 82,
           "tags": [],
           "text": "Record field set and a sha256 per generated file"
         },
         {
           "checked": false,
-          "line_num": 71,
+          "line_num": 83,
           "tags": [],
           "text": "Version the schema from day one"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "781f65dbb857385f",
-      "line_num": 69,
+      "id": "6355da635b60339b",
+      "line_num": 81,
       "source": "todo_md",
       "tags": [],
-      "text": "**Regeneration manifest: `<app>/.startr-manifest.json`**\n- [ ] Record field set and a sha256 per generated file\n- [ ] Version the schema from day one\n\n`TODO.md:L69`",
+      "text": "**Regeneration manifest: `<app>/.startr-manifest.json`**\n- [ ] Record field set and a sha256 per generated file\n- [ ] Version the schema from day one\n\n`TODO.md:L81`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -333,30 +333,30 @@
       "children": [
         {
           "checked": false,
-          "line_num": 74,
+          "line_num": 86,
           "tags": [],
           "text": "Field added \u2192 insert a `devnote` naming it"
         },
         {
           "checked": false,
-          "line_num": 75,
+          "line_num": 87,
           "tags": [],
           "text": "Field removed \u2192 WARNING, edit nothing"
         },
         {
           "checked": false,
-          "line_num": 76,
+          "line_num": 88,
           "tags": [],
           "text": "Sha mismatch \u2192 hand-edited, never touched"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "71d409bc3ac91cd9",
-      "line_num": 73,
+      "id": "90381c983d6d8aed",
+      "line_num": 85,
       "source": "todo_md",
       "tags": [],
-      "text": "**`--amend` under model drift**\n- [ ] Field added \u2192 insert a `devnote` naming it\n- [ ] Field removed \u2192 WARNING, edit nothing\n- [ ] Sha mismatch \u2192 hand-edited, never touched\n\n`TODO.md:L73`",
+      "text": "**`--amend` under model drift**\n- [ ] Field added \u2192 insert a `devnote` naming it\n- [ ] Field removed \u2192 WARNING, edit nothing\n- [ ] Sha mismatch \u2192 hand-edited, never touched\n\n`TODO.md:L85`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -366,42 +366,42 @@
       "children": [
         {
           "checked": true,
-          "line_num": 81,
+          "line_num": 93,
           "tags": [],
           "text": "`docs/decisions/2026-08-20-jinja2-meta-delimiters.md` \u2014 SPK1 output"
         },
         {
           "checked": false,
-          "line_num": 82,
+          "line_num": 94,
           "tags": [],
           "text": "`docs/JINJA2-MIGRATION.md` \u2014 conversion table, incl. the two rows SPK1 found"
         },
         {
           "checked": false,
-          "line_num": 83,
+          "line_num": 95,
           "tags": [],
           "text": "`AGENTS.md` \u2014 what an agent must never do here"
         },
         {
           "checked": false,
-          "line_num": 84,
+          "line_num": 96,
           "tags": [],
           "text": "`docs/PROMPTS.md` \u2014 worked prompts"
         },
         {
           "checked": false,
-          "line_num": 85,
+          "line_num": 97,
           "tags": [],
           "text": "`README.md` rewrite \u2014 install, wire `TEMPLATES`, run, flags"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "c77556956d4451cc",
-      "line_num": 80,
+      "id": "d0ef7943c41ab848",
+      "line_num": 92,
       "source": "todo_md",
       "tags": [],
-      "text": "**In-repo docs**\n- [x] `docs/decisions/2026-08-20-jinja2-meta-delimiters.md` \u2014 SPK1 output\n- [ ] `docs/JINJA2-MIGRATION.md` \u2014 conversion table, incl. the two rows SPK1 found\n- [ ] `AGENTS.md` \u2014 what an agent must never do here\n- [ ] `docs/PROMPTS.md` \u2014 worked prompts\n- [ ] `README.md` rewrite \u2014 install, wire `TEMPLATES`, run, flags\n\n`TODO.md:L80`",
+      "text": "**In-repo docs**\n- [x] `docs/decisions/2026-08-20-jinja2-meta-delimiters.md` \u2014 SPK1 output\n- [ ] `docs/JINJA2-MIGRATION.md` \u2014 conversion table, incl. the two rows SPK1 found\n- [ ] `AGENTS.md` \u2014 what an agent must never do here\n- [ ] `docs/PROMPTS.md` \u2014 worked prompts\n- [ ] `README.md` rewrite \u2014 install, wire `TEMPLATES`, run, flags\n\n`TODO.md:L92`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -411,24 +411,24 @@
       "children": [
         {
           "checked": false,
-          "line_num": 88,
+          "line_num": 100,
           "tags": [],
           "text": "Point at the in-repo docs rather than restating them"
         },
         {
           "checked": false,
-          "line_num": 89,
+          "line_num": 101,
           "tags": [],
           "text": "Cover the ui-Sprig grant nuance: script yes, hyperscript never"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "1e8f586aa08815b3",
-      "line_num": 87,
+      "id": "bbb8962a4e929431",
+      "line_num": 99,
       "source": "todo_md",
       "tags": [],
-      "text": "**`/startr-django` skill: sibling of `/startr-init`**\n- [ ] Point at the in-repo docs rather than restating them\n- [ ] Cover the ui-Sprig grant nuance: script yes, hyperscript never\n\n`TODO.md:L87`",
+      "text": "**`/startr-django` skill: sibling of `/startr-init`**\n- [ ] Point at the in-repo docs rather than restating them\n- [ ] Cover the ui-Sprig grant nuance: script yes, hyperscript never\n\n`TODO.md:L99`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -438,30 +438,30 @@
       "children": [
         {
           "checked": false,
-          "line_num": 94,
+          "line_num": 106,
           "tags": [],
           "text": "`src/base/_aside.css`, `@import` from `builds/startr-base.css`"
         },
         {
           "checked": false,
-          "line_num": 95,
+          "line_num": 107,
           "tags": [],
           "text": "Inset and bordered from `--border` / `--text-muted`, ~20 lines"
         },
         {
           "checked": false,
-          "line_num": 96,
+          "line_num": 108,
           "tags": [],
           "text": "Fallback if declined: bare unstyled `<aside>`, correct either way"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "01e0823ad6d34c88",
-      "line_num": 93,
+      "id": "487db8efb0485d35",
+      "line_num": 105,
       "source": "todo_md",
       "tags": [],
-      "text": "**startr.style: base styling for `aside` (Alexander \u2014 sign-off first)**\n- [ ] `src/base/_aside.css`, `@import` from `builds/startr-base.css`\n- [ ] Inset and bordered from `--border` / `--text-muted`, ~20 lines\n- [ ] Fallback if declined: bare unstyled `<aside>`, correct either way\n\n`TODO.md:L93`",
+      "text": "**startr.style: base styling for `aside` (Alexander \u2014 sign-off first)**\n- [ ] `src/base/_aside.css`, `@import` from `builds/startr-base.css`\n- [ ] Inset and bordered from `--border` / `--text-muted`, ~20 lines\n- [ ] Fallback if declined: bare unstyled `<aside>`, correct either way\n\n`TODO.md:L105`",
       "type": "text",
       "width": 280,
       "x": 360,
@@ -469,7 +469,7 @@
     },
     {
       "color": "5",
-      "height": 200,
+      "height": 250,
       "id": "col-in_progress",
       "label": "In Progress",
       "type": "group",
@@ -480,39 +480,114 @@
     {
       "children": [
         {
-          "checked": false,
+          "checked": true,
           "line_num": 26,
           "tags": [],
-          "text": "`git checkout -b develop` from master"
+          "text": "Django admin named \"Startr Admin\": `apps.py` + `STARTR_ADMIN_TITLE`, a project's own title wins, login override shows `site_header`; 2 tests (2026-09-28, made in Trellis's subtree; `make startr_push` brings it here)"
         },
         {
-          "checked": false,
+          "checked": true,
           "line_num": 27,
           "tags": [],
-          "text": "`git tag v0.22.0 master` \u2014 `make version_check` warns until it lands"
+          "text": "The admin skinned from startr.style tokens through Django's own CSS variables (header, links, buttons, tints, dark), the sidebar replaced by the apps and models as tiers in the header, a one-card sign-in; `STARTR_STYLE_URL` for a vendored kit; `STARTR_ADMIN_NAV = False` keeps Django's sidebar (2026-10-17); proof: NavRenderTest, Trellis `admin-skin.cy.js`"
+        },
+        {
+          "checked": true,
+          "line_num": 28,
+          "tags": [],
+          "text": "Two navs in the package, automatic for any project: `startr_nav_html(\"dock\")` / `{% startr_nav %}` (first four primary pages on a phone, More for the rest) and tiers (apps as groups); `STARTR_NAV_DOCK`, `STARTR_NAV_GROUPS`, `STARTR_NAV_ICONS` refine (2026-10-17)"
         },
         {
           "checked": false,
-          "line_num": 28,
+          "line_num": 29,
           "tags": [],
-          "text": "Confirm this fork, not `opencoca/STARTR-WEB-OPS-django-startr`"
+          "text": "[MANUALLY] The switch: one setting (`STARTR_BRAND = \"startr\" | \"sage\"`) or a per-project brand blocks file"
+        },
+        {
+          "checked": false,
+          "line_num": 30,
+          "tags": [],
+          "text": "Brand assets ship in the package as static files, one source of truth: the Sage mark (AI-UI commit `228b958`), the Startr mark, favicons"
+        },
+        {
+          "checked": false,
+          "line_num": 31,
+          "tags": [],
+          "text": "Base shell: header mark, footer credit, colours as startr.style tokens on `:root`, light and dark"
+        },
+        {
+          "checked": true,
+          "line_num": 32,
+          "tags": [],
+          "text": "Colour tokens live upstream in startr.style (1.4.x ships `--primary-tint`, `--good-bg`, `--warn-bg`, `--bad-bg`, `--font-sans`, `--font-mono`); the package maps, never defines (decided 2026-10-17)"
+        },
+        {
+          "checked": false,
+          "line_num": 33,
+          "tags": [],
+          "text": "Block contract unchanged (`title` + `content`); consumers only gain blocks"
+        },
+        {
+          "checked": false,
+          "line_num": 34,
+          "tags": [],
+          "text": "Gold test: Trellis via its subtree (`make startr_pull`); then the submodule consumers `AnatoliHS/Django3.0` (clones `Tony/Django3.0`, `WEB-Tony-Django`) and the `Startr/WEB-Django` template"
+        },
+        {
+          "checked": false,
+          "line_num": 35,
+          "tags": [],
+          "text": "A generator test asserts the mark and the brand title in the base template"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "61b266eb326b2d9a",
+      "id": "4dea41f98ed381c6",
       "line_num": 25,
       "source": "todo_md",
       "tags": [],
-      "text": "**Git setup (Alexander \u2014 this session never writes to git)**\n- [ ] `git checkout -b develop` from master\n- [ ] `git tag v0.22.0 master` \u2014 `make version_check` warns until it lands\n- [ ] Confirm this fork, not `opencoca/STARTR-WEB-OPS-django-startr`\n\n`TODO.md:L25`",
+      "text": "**Startr/Sage branding in every generated project #critical: a Django Startr project boots branded (mark, favicon, footer, colour tokens), not as a bare page (Alexander 2026-09-28)**\n- [x] Django admin named \"Startr Admin\": `apps.py` + `STARTR_ADMIN_TITLE`, a project's own title wins, login override shows `site_header`; 2 tests (2026-09-28, made in Trellis's subtree; `make startr_push` brings it here)\n- [x] The admin skinned from startr.style tokens through Django's own CSS variables (header, links, buttons, tints, dark), the sidebar replaced by the apps and models as tiers in the header, a one-card sign-in; `STARTR_STYLE_URL` for a vendored kit; `STARTR_ADMIN_NAV = False` keeps Django's sidebar (2026-10-17); proof: NavRenderTest, Trellis `admin-skin.cy.js`\n- [x] Two navs in the package, automatic for any project: `startr_nav_html(\"dock\")` / `{% startr_nav %}` (first four primary pages on a phone, More for the rest) and tiers (apps as groups); `STARTR_NAV_DOCK`, `STARTR_NAV_GROUPS`, `STARTR_NAV_ICONS` refine (2026-10-17)\n- [ ] [MANUALLY] The switch: one setting (`STARTR_BRAND = \"startr\" | \"sage\"`) or a per-project brand blocks file\n- [ ] Brand assets ship in the package as static files, one source of truth: the Sage mark (AI-UI commit `228b958`), the Startr mark, favicons\n- [ ] Base shell: header mark, footer credit, colours as startr.style tokens on `:root`, light and dark\n- [x] Colour tokens live upstream in startr.style (1.4.x ships `--primary-tint`, `--good-bg`, `--warn-bg`, `--bad-bg`, `--font-sans`, `--font-mono`); the package maps, never defines (decided 2026-10-17)\n- [ ] Block contract unchanged (`title` + `content`); consumers only gain blocks\n- [ ] Gold test: Trellis via its subtree (`make startr_pull`); then the submodule consumers `AnatoliHS/Django3.0` (clones `Tony/Django3.0`, `WEB-Tony-Django`) and the `Startr/WEB-Django` template\n- [ ] A generator test asserts the mark and the brand title in the base template\n\n`TODO.md:L25`",
       "type": "text",
       "width": 280,
       "x": 710,
       "y": 60
     },
     {
+      "children": [
+        {
+          "checked": false,
+          "line_num": 38,
+          "tags": [],
+          "text": "`git checkout -b develop` from master"
+        },
+        {
+          "checked": false,
+          "line_num": 39,
+          "tags": [],
+          "text": "`git tag v0.22.0 master` \u2014 `make version_check` warns until it lands"
+        },
+        {
+          "checked": false,
+          "line_num": 40,
+          "tags": [],
+          "text": "Confirm this fork, not `opencoca/STARTR-WEB-OPS-django-startr`"
+        }
+      ],
+      "file_path": "TODO.md",
+      "height": 80,
+      "id": "ed3e623625bfbd53",
+      "line_num": 37,
+      "source": "todo_md",
+      "tags": [],
+      "text": "**Git setup (Alexander \u2014 this session never writes to git)**\n- [ ] `git checkout -b develop` from master\n- [ ] `git tag v0.22.0 master` \u2014 `make version_check` warns until it lands\n- [ ] Confirm this fork, not `opencoca/STARTR-WEB-OPS-django-startr`\n\n`TODO.md:L37`",
+      "type": "text",
+      "width": 280,
+      "x": 710,
+      "y": 150
+    },
+    {
       "color": "1",
-      "height": 250,
+      "height": 200,
       "id": "col-bugs",
       "label": "Bugs",
       "type": "group",
@@ -524,75 +599,26 @@
       "children": [
         {
           "checked": false,
-          "line_num": 121,
+          "line_num": 152,
           "tags": [],
-          "text": "`{{ url('crm:lead-detail', pk) }}` raises `ImproperlyConfigured`"
-        },
-        {
-          "checked": false,
-          "line_num": 122,
-          "tags": [],
-          "text": "Positional arg lands in the `urlconf` slot"
-        },
-        {
-          "checked": false,
-          "line_num": 123,
-          "tags": [],
-          "text": "Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`"
+          "text": "Inside the built image, `/project/django_startr` (Dockerfile symlink to the generator's repo root) makes `django_startr` a two-location namespace package under `python -m pytest`; the server is unaffected (`manage.py` runs from `our_site/`)"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "5ae3c3d379fb05b5",
-      "line_num": 120,
+      "id": "64ff49e87fcfbea6",
+      "line_num": 151,
       "source": "todo_md",
-      "tags": [
-        "#bug"
-      ],
-      "text": "**reastate: `url()` global is bare `reverse` \u2014 latent, will bite**\n- [ ] `{{ url('crm:lead-detail', pk) }}` raises `ImproperlyConfigured`\n- [ ] Positional arg lands in the `urlconf` slot\n- [ ] Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`\n\n`#bug`\n`TODO.md:L120`",
+      "tags": [],
+      "text": "**WEB-Django: the full pytest run cannot import `our_site.settings` #bug: with the header fixed, `testpaths` fails `No module named 'our_site.settings'` and pytest-django finds no `manage.py`; `make test` names one file and passes**\n- [ ] Inside the built image, `/project/django_startr` (Dockerfile symlink to the generator's repo root) makes `django_startr` a two-location namespace package under `python -m pytest`; the server is unaffected (`manage.py` runs from `our_site/`)\n\n`TODO.md:L151`",
       "type": "text",
       "width": 280,
       "x": 1060,
       "y": 60
     },
     {
-      "children": [
-        {
-          "checked": false,
-          "line_num": 126,
-          "tags": [],
-          "text": "`git status` in `our_submodules/STARTR-django-code` shows every file `D`"
-        },
-        {
-          "checked": false,
-          "line_num": 127,
-          "tags": [],
-          "text": "`make it_startr` cannot work in that state"
-        },
-        {
-          "checked": false,
-          "line_num": 128,
-          "tags": [],
-          "text": "Confirm whether this is local-only before filing upstream"
-        }
-      ],
-      "file_path": "TODO.md",
-      "height": 80,
-      "id": "c53d66b30c7c317f",
-      "line_num": 125,
-      "source": "todo_md",
-      "tags": [
-        "#bug"
-      ],
-      "text": "**WEB-Django: submodule working tree is empty**\n- [ ] `git status` in `our_submodules/STARTR-django-code` shows every file `D`\n- [ ] `make it_startr` cannot work in that state\n- [ ] Confirm whether this is local-only before filing upstream\n\n`#bug`\n`TODO.md:L125`",
-      "type": "text",
-      "width": 280,
-      "x": 1060,
-      "y": 150
-    },
-    {
       "color": "6",
-      "height": 1060,
+      "height": 1330,
       "id": "col-done",
       "label": "Done",
       "type": "group",
@@ -604,30 +630,30 @@
       "children": [
         {
           "checked": true,
-          "line_num": 36,
+          "line_num": 48,
           "tags": [],
           "text": "`get_queryset` ANDs words, ORs fields, ends in `.distinct()`"
         },
         {
           "checked": true,
-          "line_num": 37,
+          "line_num": 49,
           "tags": [],
           "text": "Field list from model introspection, text-ish concrete fields only"
         },
         {
           "checked": true,
-          "line_num": 38,
+          "line_num": 50,
           "tags": [],
           "text": "Reuse the reastate pattern, do not write a second implementation"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "a63672fc6eae2773",
-      "line_num": 35,
+      "id": "f0dec5c9d381b8c9",
+      "line_num": 47,
       "source": "todo_md",
       "tags": [],
-      "text": "**Server-side search in the views emitter: `?q=` across text fields**\n- [x] `get_queryset` ANDs words, ORs fields, ends in `.distinct()`\n- [x] Field list from model introspection, text-ish concrete fields only\n- [x] Reuse the reastate pattern, do not write a second implementation\n\n`TODO.md:L35`",
+      "text": "**Server-side search in the views emitter: `?q=` across text fields**\n- [x] `get_queryset` ANDs words, ORs fields, ends in `.distinct()`\n- [x] Field list from model introspection, text-ish concrete fields only\n- [x] Reuse the reastate pattern, do not write a second implementation\n\n`TODO.md:L47`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -637,42 +663,30 @@
       "children": [
         {
           "checked": true,
+          "line_num": 133,
+          "tags": [],
+          "text": "`{{ url('crm:lead-detail', pk) }}` raises `ImproperlyConfigured`"
+        },
+        {
+          "checked": true,
+          "line_num": 134,
+          "tags": [],
+          "text": "Positional arg lands in the `urlconf` slot"
+        },
+        {
+          "checked": true,
           "line_num": 135,
           "tags": [],
-          "text": "`.gitignore` bare `__init__.py` line ignored EVERY package init"
-        },
-        {
-          "checked": true,
-          "line_num": 136,
-          "tags": [],
-          "text": "Added the four missing `__init__.py` files"
-        },
-        {
-          "checked": true,
-          "line_num": 137,
-          "tags": [],
-          "text": "`find_packages` replaces hand-listed `['django_startr']`"
-        },
-        {
-          "checked": true,
-          "line_num": 138,
-          "tags": [],
-          "text": "`setup.py` read `README.rst`, which does not exist"
-        },
-        {
-          "checked": true,
-          "line_num": 139,
-          "tags": [],
-          "text": "Version single-sourced in `django_startr/__init__.py`"
+          "text": "Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "f7ad428ad58cc6db",
-      "line_num": 134,
+      "id": "d728a35a037e68df",
+      "line_num": 132,
       "source": "todo_md",
       "tags": [],
-      "text": "**Packaging repair \u2014 the break was structural, not cosmetic**\n- [x] `.gitignore` bare `__init__.py` line ignored EVERY package init\n- [x] Added the four missing `__init__.py` files\n- [x] `find_packages` replaces hand-listed `['django_startr']`\n- [x] `setup.py` read `README.rst`, which does not exist\n- [x] Version single-sourced in `django_startr/__init__.py`\n\n`TODO.md:L134`",
+      "text": "**reastate: `url()` global is bare `reverse` \u2014 latent, will bite #bug Fixed in Trellis: `config/jinja2env.py` wraps `reverse` with varargs, and the lead pane's `url('crm:lead_delete', lead.pk)` renders (2026-10-18).**\n- [x] `{{ url('crm:lead-detail', pk) }}` raises `ImproperlyConfigured`\n- [x] Positional arg lands in the `urlconf` slot\n- [x] Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`\n\n`TODO.md:L132`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -682,36 +696,60 @@
       "children": [
         {
           "checked": true,
+          "line_num": 138,
+          "tags": [],
+          "text": "`git status` in `our_submodules/STARTR-django-code` shows every file `D`"
+        },
+        {
+          "checked": true,
+          "line_num": 139,
+          "tags": [],
+          "text": "`make it_startr` cannot work in that state"
+        },
+        {
+          "checked": true,
+          "line_num": 140,
+          "tags": [],
+          "text": "Confirm whether this is local-only before filing upstream: local-only (2026-10-05). HEAD `b23a990` = the module's `origin/master`, no unpushed commits, no stash; nothing to file"
+        },
+        {
+          "checked": true,
+          "line_num": 141,
+          "tags": [],
+          "text": "[WE] WEB-Django edits, uncommitted (2026-10-05): `Makefile` (`startr_pull`/`startr_push`, plain `npx caprover deploy`, no submodule step in `it_setup`), `Dockerfile` (`ADD our_subtrees`), the `our_site/django_startr` symlink, `README.md`"
+        },
+        {
+          "checked": true,
           "line_num": 142,
           "tags": [],
-          "text": "`pkg_check` refuses a missing package init"
+          "text": "[MANUALLY] Drop the submodule (`deinit`, `git rm`, `.git/modules/our_site/STARTR-django-code`) and commit it with the edits (`6569fd1`)"
         },
         {
           "checked": true,
           "line_num": 143,
           "tags": [],
-          "text": "`stub_check` refuses leftover DTL escaping machinery"
+          "text": "[MANUALLY] `git subtree add --prefix=our_subtrees/STARTR-django-code b23a990 --squash` (`faa0c09`, merged `9edec79`)"
         },
         {
           "checked": true,
           "line_num": 144,
           "tags": [],
-          "text": "`csp_check` refuses an interpreted script attribute"
+          "text": "[WE] Verified 2026-10-05: the subtree's tree hash equals `b23a990`'s (41 paths); the symlink is tracked (120000) and resolves; `make -n deploy` is plain `npx caprover deploy`"
         },
         {
           "checked": true,
           "line_num": 145,
           "tags": [],
-          "text": "`version_check` refuses tag/`__version__` drift"
+          "text": "[WE] An image built from `git archive HEAD` holds the generator under `our_subtrees`, `manage.py check` exits 0 (3 URL warnings in the project's `urls.py`), `manage.py test django_startr experiences` 18/18"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "c758aa4a8202381d",
-      "line_num": 141,
+      "id": "c4677195fbaf433d",
+      "line_num": 137,
       "source": "todo_md",
       "tags": [],
-      "text": "**Makefile via `/startr-init` with three project gates**\n- [x] `pkg_check` refuses a missing package init\n- [x] `stub_check` refuses leftover DTL escaping machinery\n- [x] `csp_check` refuses an interpreted script attribute\n- [x] `version_check` refuses tag/`__version__` drift\n\n`TODO.md:L141`",
+      "text": "**WEB-Django: submodule working tree is empty #bug: `make deploy` tars `git ls-files --recurse-submodules`, which names 39 files not on disk; fixed 2026-10-05 by switching WEB-Django to a subtree, as Trellis did (2026-09-23)**\n- [x] `git status` in `our_submodules/STARTR-django-code` shows every file `D`\n- [x] `make it_startr` cannot work in that state\n- [x] Confirm whether this is local-only before filing upstream: local-only (2026-10-05). HEAD `b23a990` = the module's `origin/master`, no unpushed commits, no stash; nothing to file\n- [x] [WE] WEB-Django edits, uncommitted (2026-10-05): `Makefile` (`startr_pull`/`startr_push`, plain `npx caprover deploy`, no submodule step in `it_setup`), `Dockerfile` (`ADD our_subtrees`), the `our_site/django_startr` symlink, `README.md`\n- [x] [MANUALLY] Drop the submodule (`deinit`, `git rm`, `.git/modules/our_site/STARTR-django-code`) and commit it with the edits (`6569fd1`)\n- [x] [MANUALLY] `git subtree add --prefix=our_subtrees/STARTR-django-code b23a990 --squash` (`faa0c09`, merged `9edec79`)\n- [x] [WE] Verified 2026-10-05: the subtree's tree hash equals `b23a990`'s (41 paths); the symlink is tracked (120000) and resolves; `make -n deploy` is plain `npx caprover deploy`\n- [x] [WE] An image built from `git archive HEAD` holds the generator under `our_subtrees`, `manage.py check` exits 0 (3 URL warnings in the project's `urls.py`), `manage.py test django_startr experiences` 18/18\n\n`TODO.md:L137`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -721,42 +759,18 @@
       "children": [
         {
           "checked": true,
-          "line_num": 148,
-          "tags": [],
-          "text": "`metaenv.py`: `[% %]` / `[[ ]]`, autoescape off, `StrictUndefined`"
-        },
-        {
-          "checked": true,
           "line_num": 149,
           "tags": [],
-          "text": "`{{ csrf_input }}` verified by rendering, not by reading Django"
-        },
-        {
-          "checked": true,
-          "line_num": 150,
-          "tags": [],
-          "text": "`{{ form.as_p }}` renders `bound method` silently \u2014 trap confirmed"
-        },
-        {
-          "checked": true,
-          "line_num": 151,
-          "tags": [],
-          "text": "`url()` needs a varargs wrapper, not bare `reverse`"
-        },
-        {
-          "checked": true,
-          "line_num": 152,
-          "tags": [],
-          "text": "`user` is undefined under the Jinja2 backend; use `request.user`"
+          "text": "`make test`'s command: a collection error before, 21 passed after (repo mounted read-only into an image built from `HEAD`)"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "fc544a443748afc9",
-      "line_num": 147,
+      "id": "cbdb21c986fd9ec7",
+      "line_num": 148,
       "source": "todo_md",
       "tags": [],
-      "text": "**SPK1 \u2014 the delimiter spike. Kill criterion did not fire**\n- [x] `metaenv.py`: `[% %]` / `[[ ]]`, autoescape off, `StrictUndefined`\n- [x] `{{ csrf_input }}` verified by rendering, not by reading Django\n- [x] `{{ form.as_p }}` renders `bound method` silently \u2014 trap confirmed\n- [x] `url()` needs a varargs wrapper, not bare `reverse`\n- [x] `user` is undefined under the Jinja2 backend; use `request.user`\n\n`TODO.md:L147`",
+      "text": "**WEB-Django: `make test` collected nothing; `pytest.ini` opened with `[tool:pytest]` #bug: that header belongs in `setup.cfg`, so pytest ignored the file (since `33a2004`, 2025-07-02); now `[pytest]`, uncommitted (2026-10-05)**\n- [x] `make test`'s command: a collection error before, 21 passed after (repo mounted read-only into an image built from `HEAD`)\n\n`TODO.md:L148`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -766,36 +780,42 @@
       "children": [
         {
           "checked": true,
-          "line_num": 155,
+          "line_num": 159,
           "tags": [],
-          "text": "`startry.py:39` hardcoded container path \u2192 `settings.ROOT_URLCONF`"
+          "text": "`.gitignore` bare `__init__.py` line ignored EVERY package init"
         },
         {
           "checked": true,
-          "line_num": 156,
+          "line_num": 160,
           "tags": [],
-          "text": "Debug-URL check moved BEFORE any write, so a failure leaves no half-app"
+          "text": "Added the four missing `__init__.py` files"
         },
         {
           "checked": true,
-          "line_num": 157,
+          "line_num": 161,
           "tags": [],
-          "text": "Dropped `six`, `__future__`, `(object)`, unused `Context` import"
+          "text": "`find_packages` replaces hand-listed `['django_startr']`"
         },
         {
           "checked": true,
-          "line_num": 158,
+          "line_num": 162,
           "tags": [],
-          "text": "`base_template` and `project_base_template` kept distinct"
+          "text": "`setup.py` read `README.rst`, which does not exist"
+        },
+        {
+          "checked": true,
+          "line_num": 163,
+          "tags": [],
+          "text": "Version single-sourced in `django_startr/__init__.py`"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "ebf090ee57df4297",
-      "line_num": 154,
+      "id": "eb705ba5b53221ed",
+      "line_num": 158,
       "source": "todo_md",
       "tags": [],
-      "text": "**Engine repairs**\n- [x] `startry.py:39` hardcoded container path \u2192 `settings.ROOT_URLCONF`\n- [x] Debug-URL check moved BEFORE any write, so a failure leaves no half-app\n- [x] Dropped `six`, `__future__`, `(object)`, unused `Context` import\n- [x] `base_template` and `project_base_template` kept distinct\n\n`TODO.md:L154`",
+      "text": "**Packaging repair \u2014 the break was structural, not cosmetic**\n- [x] `.gitignore` bare `__init__.py` line ignored EVERY package init\n- [x] Added the four missing `__init__.py` files\n- [x] `find_packages` replaces hand-listed `['django_startr']`\n- [x] `setup.py` read `README.rst`, which does not exist\n- [x] Version single-sourced in `django_startr/__init__.py`\n\n`TODO.md:L158`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -805,36 +825,36 @@
       "children": [
         {
           "checked": true,
-          "line_num": 161,
+          "line_num": 166,
           "tags": [],
-          "text": "`create.html`, `list.html`, `base.html`, `detail.html`, `update.html`, `delete.html`"
+          "text": "`pkg_check` refuses a missing package init"
         },
         {
           "checked": true,
-          "line_num": 162,
+          "line_num": 167,
           "tags": [],
-          "text": "`make stub_check` red before, green after"
+          "text": "`stub_check` refuses leftover DTL escaping machinery"
         },
         {
           "checked": true,
-          "line_num": 163,
+          "line_num": 168,
           "tags": [],
-          "text": "Hyperscript gone; `onsubmit=\"return confirm(\u2026)\"` gone with it"
+          "text": "`csp_check` refuses an interpreted script attribute"
         },
         {
           "checked": true,
-          "line_num": 164,
+          "line_num": 169,
           "tags": [],
-          "text": "Delete confirms via the delete page, so no scripting grant is needed"
+          "text": "`version_check` refuses tag/`__version__` drift"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "c6b30f9d81a4bc0a",
-      "line_num": 160,
+      "id": "f41dd95c61c2a6d9",
+      "line_num": 165,
       "source": "todo_md",
       "tags": [],
-      "text": "**All six HTML stubs converted to Jinja2**\n- [x] `create.html`, `list.html`, `base.html`, `detail.html`, `update.html`, `delete.html`\n- [x] `make stub_check` red before, green after\n- [x] Hyperscript gone; `onsubmit=\"return confirm(\u2026)\"` gone with it\n- [x] Delete confirms via the delete page, so no scripting grant is needed\n\n`TODO.md:L160`",
+      "text": "**Makefile via `/startr-init` with three project gates**\n- [x] `pkg_check` refuses a missing package init\n- [x] `stub_check` refuses leftover DTL escaping machinery\n- [x] `csp_check` refuses an interpreted script attribute\n- [x] `version_check` refuses tag/`__version__` drift\n\n`TODO.md:L165`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -844,30 +864,42 @@
       "children": [
         {
           "checked": true,
-          "line_num": 167,
+          "line_num": 172,
           "tags": [],
-          "text": "`forms`, `urls`, `admin`, `views`, `__init__views`, `__init__urls`"
+          "text": "`metaenv.py`: `[% %]` / `[[ ]]`, autoescape off, `StrictUndefined`"
         },
         {
           "checked": true,
-          "line_num": 168,
+          "line_num": 173,
           "tags": [],
-          "text": "`|join:\", \"` \u2192 `|join(', ')`, `.items` \u2192 `.items()`, `forloop` \u2192 `loop`"
+          "text": "`{{ csrf_input }}` verified by rendering, not by reading Django"
         },
         {
           "checked": true,
-          "line_num": 169,
+          "line_num": 174,
           "tags": [],
-          "text": "`__init__urls` rewritten: a line ending in a meta block tag lost its"
+          "text": "`{{ form.as_p }}` renders `bound method` silently \u2014 trap confirmed"
+        },
+        {
+          "checked": true,
+          "line_num": 175,
+          "tags": [],
+          "text": "`url()` needs a varargs wrapper, not bare `reverse`"
+        },
+        {
+          "checked": true,
+          "line_num": 176,
+          "tags": [],
+          "text": "`user` is undefined under the Jinja2 backend; use `request.user`"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "8f3d943205fffc01",
-      "line_num": 166,
+      "id": "095af0873995865d",
+      "line_num": 171,
       "source": "todo_md",
       "tags": [],
-      "text": "**All six Python emitters converted**\n- [x] `forms`, `urls`, `admin`, `views`, `__init__views`, `__init__urls`\n- [x] `|join:\", \"` \u2192 `|join(', ')`, `.items` \u2192 `.items()`, `forloop` \u2192 `loop`\n- [x] `__init__urls` rewritten: a line ending in a meta block tag lost its\n\n`TODO.md:L166`",
+      "text": "**SPK1 \u2014 the delimiter spike. Kill criterion did not fire**\n- [x] `metaenv.py`: `[% %]` / `[[ ]]`, autoescape off, `StrictUndefined`\n- [x] `{{ csrf_input }}` verified by rendering, not by reading Django\n- [x] `{{ form.as_p }}` renders `bound method` silently \u2014 trap confirmed\n- [x] `url()` needs a varargs wrapper, not bare `reverse`\n- [x] `user` is undefined under the Jinja2 backend; use `request.user`\n\n`TODO.md:L171`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -877,30 +909,36 @@
       "children": [
         {
           "checked": true,
-          "line_num": 173,
+          "line_num": 179,
           "tags": [],
-          "text": "`SEARCH_FIELDS` introspected from text-ish concrete field types"
+          "text": "`startry.py:39` hardcoded container path \u2192 `settings.ROOT_URLCONF`"
         },
         {
           "checked": true,
-          "line_num": 174,
+          "line_num": 180,
           "tags": [],
-          "text": "Words ANDed, fields ORed, `.distinct()` for the join case"
+          "text": "Debug-URL check moved BEFORE any write, so a failure leaves no half-app"
         },
         {
           "checked": true,
-          "line_num": 175,
+          "line_num": 181,
           "tags": [],
-          "text": "Works with JavaScript off; the old filter lied past page one"
+          "text": "Dropped `six`, `__future__`, `(object)`, unused `Context` import"
+        },
+        {
+          "checked": true,
+          "line_num": 182,
+          "tags": [],
+          "text": "`base_template` and `project_base_template` kept distinct"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "fa48884264185e36",
-      "line_num": 172,
+      "id": "4aac7b059d594c76",
+      "line_num": 178,
       "source": "todo_md",
       "tags": [],
-      "text": "**Server-side search replaces the hyperscript filter**\n- [x] `SEARCH_FIELDS` introspected from text-ish concrete field types\n- [x] Words ANDed, fields ORed, `.distinct()` for the join case\n- [x] Works with JavaScript off; the old filter lied past page one\n\n`TODO.md:L172`",
+      "text": "**Engine repairs**\n- [x] `startry.py:39` hardcoded container path \u2192 `settings.ROOT_URLCONF`\n- [x] Debug-URL check moved BEFORE any write, so a failure leaves no half-app\n- [x] Dropped `six`, `__future__`, `(object)`, unused `Context` import\n- [x] `base_template` and `project_base_template` kept distinct\n\n`TODO.md:L178`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -910,36 +948,36 @@
       "children": [
         {
           "checked": true,
-          "line_num": 178,
+          "line_num": 185,
           "tags": [],
-          "text": "`Pipfile` mirrors `setup.py` install_requires; python 3.11 like WEB-Django"
+          "text": "`create.html`, `list.html`, `base.html`, `detail.html`, `update.html`, `delete.html`"
         },
         {
           "checked": true,
-          "line_num": 179,
+          "line_num": 186,
           "tags": [],
-          "text": "`make dev_install` builds it, `make env_check` refuses a silent skip"
+          "text": "`make stub_check` red before, green after"
         },
         {
           "checked": true,
-          "line_num": 180,
+          "line_num": 187,
           "tags": [],
-          "text": "All 17 tests run, 0 skipped \u2014 django 4.2.30, jinja2 3.1.6"
+          "text": "Hyperscript gone; `onsubmit=\"return confirm(\u2026)\"` gone with it"
         },
         {
           "checked": true,
-          "line_num": 181,
+          "line_num": 188,
           "tags": [],
-          "text": "Proved the fail-closed dev-note guard fails when deliberately broken"
+          "text": "Delete confirms via the delete page, so no scripting grant is needed"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "0437f063c0526214",
-      "line_num": 177,
+      "id": "37c04e05e364673a",
+      "line_num": 184,
       "source": "todo_md",
       "tags": [],
-      "text": "**Local dev environment via pipenv \u2014 no Dockerfile needed**\n- [x] `Pipfile` mirrors `setup.py` install_requires; python 3.11 like WEB-Django\n- [x] `make dev_install` builds it, `make env_check` refuses a silent skip\n- [x] All 17 tests run, 0 skipped \u2014 django 4.2.30, jinja2 3.1.6\n- [x] Proved the fail-closed dev-note guard fails when deliberately broken\n\n`TODO.md:L177`",
+      "text": "**All six HTML stubs converted to Jinja2**\n- [x] `create.html`, `list.html`, `base.html`, `detail.html`, `update.html`, `delete.html`\n- [x] `make stub_check` red before, green after\n- [x] Hyperscript gone; `onsubmit=\"return confirm(\u2026)\"` gone with it\n- [x] Delete confirms via the delete page, so no scripting grant is needed\n\n`TODO.md:L184`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -949,24 +987,30 @@
       "children": [
         {
           "checked": true,
-          "line_num": 184,
+          "line_num": 191,
           "tags": [],
-          "text": "17 tests, 0 skipped; meta layer needs only Jinja2"
+          "text": "`forms`, `urls`, `admin`, `views`, `__init__views`, `__init__urls`"
         },
         {
           "checked": true,
-          "line_num": 185,
+          "line_num": 192,
           "tags": [],
-          "text": "Every test records the failure that motivated it"
+          "text": "`|join:\", \"` \u2192 `|join(', ')`, `.items` \u2192 `.items()`, `forloop` \u2192 `loop`"
+        },
+        {
+          "checked": true,
+          "line_num": 193,
+          "tags": [],
+          "text": "`__init__urls` rewritten: a line ending in a meta block tag lost its"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "59595ce3e71d7354",
-      "line_num": 183,
+      "id": "d43b493d2336b7b2",
+      "line_num": 190,
       "source": "todo_md",
       "tags": [],
-      "text": "**Test suite and `make test`**\n- [x] 17 tests, 0 skipped; meta layer needs only Jinja2\n- [x] Every test records the failure that motivated it\n\n`TODO.md:L183`",
+      "text": "**All six Python emitters converted**\n- [x] `forms`, `urls`, `admin`, `views`, `__init__views`, `__init__urls`\n- [x] `|join:\", \"` \u2192 `|join(', ')`, `.items` \u2192 `.items()`, `forloop` \u2192 `loop`\n- [x] `__init__urls` rewritten: a line ending in a meta block tag lost its\n\n`TODO.md:L190`",
       "type": "text",
       "width": 280,
       "x": 1410,
@@ -976,28 +1020,127 @@
       "children": [
         {
           "checked": true,
-          "line_num": 188,
+          "line_num": 197,
+          "tags": [],
+          "text": "`SEARCH_FIELDS` introspected from text-ish concrete field types"
+        },
+        {
+          "checked": true,
+          "line_num": 198,
+          "tags": [],
+          "text": "Words ANDed, fields ORed, `.distinct()` for the join case"
+        },
+        {
+          "checked": true,
+          "line_num": 199,
+          "tags": [],
+          "text": "Works with JavaScript off; the old filter lied past page one"
+        }
+      ],
+      "file_path": "TODO.md",
+      "height": 80,
+      "id": "ead5e3a92821c455",
+      "line_num": 196,
+      "source": "todo_md",
+      "tags": [],
+      "text": "**Server-side search replaces the hyperscript filter**\n- [x] `SEARCH_FIELDS` introspected from text-ish concrete field types\n- [x] Words ANDed, fields ORed, `.distinct()` for the join case\n- [x] Works with JavaScript off; the old filter lied past page one\n\n`TODO.md:L196`",
+      "type": "text",
+      "width": 280,
+      "x": 1410,
+      "y": 960
+    },
+    {
+      "children": [
+        {
+          "checked": true,
+          "line_num": 202,
+          "tags": [],
+          "text": "`Pipfile` mirrors `setup.py` install_requires; python 3.11 like WEB-Django"
+        },
+        {
+          "checked": true,
+          "line_num": 203,
+          "tags": [],
+          "text": "`make dev_install` builds it, `make env_check` refuses a silent skip"
+        },
+        {
+          "checked": true,
+          "line_num": 204,
+          "tags": [],
+          "text": "All 17 tests run, 0 skipped \u2014 django 4.2.30, jinja2 3.1.6"
+        },
+        {
+          "checked": true,
+          "line_num": 205,
+          "tags": [],
+          "text": "Proved the fail-closed dev-note guard fails when deliberately broken"
+        }
+      ],
+      "file_path": "TODO.md",
+      "height": 80,
+      "id": "1504153b3655c8f6",
+      "line_num": 201,
+      "source": "todo_md",
+      "tags": [],
+      "text": "**Local dev environment via pipenv \u2014 no Dockerfile needed**\n- [x] `Pipfile` mirrors `setup.py` install_requires; python 3.11 like WEB-Django\n- [x] `make dev_install` builds it, `make env_check` refuses a silent skip\n- [x] All 17 tests run, 0 skipped \u2014 django 4.2.30, jinja2 3.1.6\n- [x] Proved the fail-closed dev-note guard fails when deliberately broken\n\n`TODO.md:L201`",
+      "type": "text",
+      "width": 280,
+      "x": 1410,
+      "y": 1050
+    },
+    {
+      "children": [
+        {
+          "checked": true,
+          "line_num": 208,
+          "tags": [],
+          "text": "17 tests, 0 skipped; meta layer needs only Jinja2"
+        },
+        {
+          "checked": true,
+          "line_num": 209,
+          "tags": [],
+          "text": "Every test records the failure that motivated it"
+        }
+      ],
+      "file_path": "TODO.md",
+      "height": 80,
+      "id": "bcbe669a602b0508",
+      "line_num": 207,
+      "source": "todo_md",
+      "tags": [],
+      "text": "**Test suite and `make test`**\n- [x] 17 tests, 0 skipped; meta layer needs only Jinja2\n- [x] Every test records the failure that motivated it\n\n`TODO.md:L207`",
+      "type": "text",
+      "width": 280,
+      "x": 1410,
+      "y": 1140
+    },
+    {
+      "children": [
+        {
+          "checked": true,
+          "line_num": 212,
           "tags": [],
           "text": "`TODO.md` created to convention"
         },
         {
           "checked": true,
-          "line_num": 189,
+          "line_num": 213,
           "tags": [],
           "text": "`.todoscope-exclude.csv` created"
         }
       ],
       "file_path": "TODO.md",
       "height": 80,
-      "id": "983800415f8a397a",
-      "line_num": 187,
+      "id": "89c0fc390f9480f0",
+      "line_num": 211,
       "source": "todo_md",
       "tags": [],
-      "text": "**TodoScope alignment**\n- [x] `TODO.md` created to convention\n- [x] `.todoscope-exclude.csv` created\n\n`TODO.md:L187`",
+      "text": "**TodoScope alignment**\n- [x] `TODO.md` created to convention\n- [x] `.todoscope-exclude.csv` created\n\n`TODO.md:L211`",
       "type": "text",
       "width": 280,
       "x": 1410,
-      "y": 960
+      "y": 1230
     }
   ]
 }

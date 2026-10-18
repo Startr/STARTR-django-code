@@ -129,10 +129,10 @@ Migrating from DTL meta-templates to Jinja2. Plan and rationale in
 
 ## Bugs
 
-- [ ] **reastate: `url()` global is bare `reverse`** — latent, will bite #bug
-  - [ ] `{{ url('crm:lead-detail', pk) }}` raises `ImproperlyConfigured`
-  - [ ] Positional arg lands in the `urlconf` slot
-  - [ ] Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`
+- [x] **reastate: `url()` global is bare `reverse`** — latent, will bite #bug Fixed in Trellis: `config/jinja2env.py` wraps `reverse` with varargs, and the lead pane's `url('crm:lead_delete', lead.pk)` renders (2026-10-18).
+  - [x] `{{ url('crm:lead-detail', pk) }}` raises `ImproperlyConfigured`
+  - [x] Positional arg lands in the `urlconf` slot
+  - [x] Fix: adopt the varargs wrapper from `django_startr/jinja2env.py`
 
 - [x] **WEB-Django: submodule working tree is empty** #bug: `make deploy` tars `git ls-files --recurse-submodules`, which names 39 files not on disk; fixed 2026-10-05 by switching WEB-Django to a subtree, as Trellis did (2026-09-23)
   - [x] `git status` in `our_submodules/STARTR-django-code` shows every file `D`
