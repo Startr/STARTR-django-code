@@ -239,6 +239,8 @@ TEMPLATES = [{
 }]
 ```
 
+The ready-made navs, `startr_nav_html("dock")` and `startr_nav_html("tiers")`, render through a template engine the package owns. A Jinja-only project, with or without the admin, needs no DjangoTemplates backend for them.
+
 The shell loops over `startr_nav` and reads `url` and `label` off each item.
 
 ```jinja
@@ -249,7 +251,7 @@ The shell loops over `startr_nav` and reads `url` and `label` off each item.
 
 An entry shows only where the viewer can use it. An authenticated user needs `<app_label>.view_<model>`. An anonymous viewer sees every model entry, because a generated list view is unauthenticated out of the box; a project that puts its lists behind login sets `STARTR_NAV_ANON = False`.
 
-Each item also carries a `primary` flag, so the shell puts the few pages people use inline and folds the rest into a disclosure. `STARTR_NAV_PRIMARY` decides when set. Otherwise, if `STARTR_NAV_ORDER` is set, the entries it names plus every extra are primary. Otherwise everything is primary.
+Each item also carries a `primary` flag, so the shell puts the few pages people use inline and folds the rest into a disclosure. `STARTR_NAV_PRIMARY` decides when set. Otherwise, if `STARTR_NAV_ORDER` is set, the entries it names plus every extra are primary. Otherwise everything is primary. A page named in `STARTR_NAV_DOCK` is primary whatever those lists say, so it always has a link.
 
 All settings are optional.
 

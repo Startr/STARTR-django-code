@@ -972,6 +972,34 @@ class NavRenderTest(unittest.TestCase):
         self.assertIn("data-tiers", context["startr_nav_html"]("tiers"))
         self.assertTrue(any(item["current"] for item in context["startr_nav"]))
 
+    def test_a_dock_page_that_is_not_primary_still_gets_a_link(self):
+        """STARTR_NAV_ORDER names two pages and STARTR_NAV_DOCK a third. The bar
+        draws primary pages and the sheet skips dock members, so the third had
+        no link at any width: a mounted page nobody could reach, which is what
+        this module exists to prevent. A page in the dock is primary."""
+        from django.test import override_settings
+        items = self._items()
+        self.assertFalse(items[2]["primary"])
+        with override_settings(STARTR_NAV_DOCK=["s0", "s2"]):
+            html = self.nav.render_nav(self._request(), "dock", items=items)
+        self.assertTrue(items[2]["primary"])
+        self.assertIn('href="/2/"', html)
+
+    def test_the_navs_render_in_a_jinja_only_project(self):
+        """The docstring's own TEMPLATES holds the Jinja2 backend alone. The navs
+        are Django templates, so they render through an engine the package owns."""
+        from django.test import override_settings
+        jinja_only = [{"BACKEND": "django.template.backends.jinja2.Jinja2", "APP_DIRS": False, "DIRS": [], "OPTIONS": {}}]
+        with override_settings(TEMPLATES=jinja_only):
+            context = self.nav.startr_nav(self._request())
+            self.assertIn("data-dock", context["startr_nav_html"]("dock"))
+            self.assertIn("data-tiers", context["startr_nav_html"]("tiers"))
+
+    def test_the_navs_render_when_the_django_engine_has_no_app_dirs(self):
+        from django.test import override_settings
+        with override_settings(TEMPLATES=[dict(DJANGO_ENGINE, APP_DIRS=False)]):
+            self.assertIn("data-dock", self.nav.render_nav(self._request(), "dock"))
+
     def test_the_tiers_fit_a_phone(self):
         """A grid item will not shrink below its content, so a row of page links
         wider than the screen widened the nav, the header and the page, and

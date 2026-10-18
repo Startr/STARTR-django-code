@@ -26,6 +26,10 @@ The shell then writes three lines and never thinks about it again::
     <a href="{{ item.url }}">{{ item.label }}</a>
     {% endfor %}
 
+The ready-made navs (``startr_nav_html("dock")`` and ``"tiers"``) need no
+DjangoTemplates backend beside it: they render through an engine this module
+owns, so a Jinja-only project, with or without the admin, gets them too.
+
 Visibility
 ----------
 An entry appears only where the viewer can use it. An authenticated user needs
@@ -73,6 +77,9 @@ What counts as primary, in order:
 """
 
 from __future__ import annotations
+
+import functools
+from pathlib import Path
 
 from django.apps import apps
 from django.conf import settings
@@ -346,13 +353,18 @@ def dock_items(items):
     """The pages in the phone dock, in dock order; ``dock_order`` is set on every item.
 
     ``STARTR_NAV_DOCK`` names them (slugs or route names). Unset, the first four
-    primary pages: a project gets a working dock on install.
+    primary pages: a project gets a working dock on install. A page in the dock
+    is primary by definition, so a dock member that was not gets the flag: the
+    bar draws primary pages only, and the sheet skips dock members, so without it
+    the page would have no link anywhere.
     """
     keys = list(getattr(settings, "STARTR_NAV_DOCK", ()) or ())
     if keys:
         dock = [item for key in keys for item in items if item["slug"] == key or item["name"] == key]
     else:
         dock = [item for item in items if item["primary"]][:4]
+    for item in dock:
+        item["primary"] = True
     for item in items:
         item["dock_order"] = dock.index(item) if item in dock else 99
     return dock
@@ -432,13 +444,32 @@ def admin_tail(path, groups, title=None, subtitle=None, obj=None):
     return name
 
 
+@functools.lru_cache(maxsize=1)
+def _engine():
+    """The package's own template engine, over its ``templates/`` folder.
+
+    The navs are Django templates, and a project's TEMPLATES may hold only a
+    Jinja2 backend, or a DjangoTemplates one without APP_DIRS. A private
+    engine finds them either way. They read no context processor, so none is
+    given; the two tag libraries they load are named here, not discovered.
+    """
+    from django.template import Engine
+
+    return Engine(
+        dirs=[str(Path(__file__).resolve().parent / "templates")],
+        libraries={"startr_nav": "django_startr.templatetags.startr_nav", "static": "django.templatetags.static"},
+        debug=settings.DEBUG,
+    )
+
+
 def render_nav(request, kind="dock", items=None, groups=None, tail=None):
     """The nav as HTML, from ``startr/nav_<kind>.html``: ``dock`` or ``tiers``.
 
-    A Django template renders it so the admin and a Jinja shell share one
-    source; the context processor hands Jinja ``startr_nav_html``.
+    A Django template renders it, through the package's own engine, so the
+    admin and a Jinja shell share one source whatever the project's TEMPLATES
+    say; the context processor hands Jinja ``startr_nav_html``.
     """
-    from django.template.loader import render_to_string
+    from django.template import Context
 
     path = getattr(request, "path", "") or ""
     if items is None:
@@ -453,7 +484,7 @@ def render_nav(request, kind="dock", items=None, groups=None, tail=None):
         context["groups"] = groups if groups is not None else nav_groups(items)
         current = next((label for label, members in context["groups"] if any(m["current"] for m in members)), None)
         context["current_group"] = current or (context["groups"][0][0] if context["groups"] else None)
-    return render_to_string(f"startr/nav_{kind}.html", context, request=request)
+    return _engine().get_template(f"startr/nav_{kind}.html").render(Context(context))
 
 
 def startr_nav(request):
