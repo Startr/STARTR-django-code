@@ -110,6 +110,7 @@ Migrating from DTL meta-templates to Jinja2. Plan and rationale in
 ## Backlog
 
 - [ ] **Consumer upgrades**: nothing is forced, submodule pins hold
+  - [ ] Every consumer moving past 090cd94 (2026-10-18): list `django_startr.admin_skin` before `django.contrib.admin` and `django_startr` after it; otherwise the admin skin and tiers stay off and `manage.py check` says `startr.W001`
   - [ ] WEB-Django: add a Jinja2 backend, regenerate `experiences`, move the pin
   - [ ] Publish `1.0.0` to PyPI once the gold test passes
 
