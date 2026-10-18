@@ -8,20 +8,24 @@ re-marks after a swap. Below a change list the row ends with a crumb for the
 object or action (`tail`), which is then the current page; the list link keeps
 the kit's on-state and the pill. Each row is a plain div toggled with `hidden`; its
 layout sits on the inner div, so the kit's !important display props never
-fight the attribute. Looks are inline props with kit tokens.
-{% endcomment %}{% with group_s="--d:inline-flex; --ai:center; --g:.4rem; --p:.6rem .9rem; --size:.85rem; --weight:600; --ws:nowrap; --c:var(--text-main); --c-hover:var(--primary); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.5rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" page_s="--pos:relative; --z:1; --d:inline-flex; --ai:center; --g:.45rem; --p:.5rem .8rem; --size:.85rem; --ws:nowrap; --c:var(--text-main); --c-hover:var(--primary); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.6rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" %}
-<nav data-tiers aria-label="Main" style="--d:grid; --g:.5rem;">
+fight the attribute. That inner div is the scroller on a narrow screen and the
+pill sits inside it, so the pill scrolls and clips with the links; `--minw:0`
+on the nav and the pages box keeps a long row of links from widening the page
+(a grid item will not shrink below its content otherwise). Looks are inline
+props with kit tokens.
+{% endcomment %}{% with group_s="--d:inline-flex; --ai:center; --g:.4rem; --p:.6rem .9rem; --size:.85rem; --weight:600; --ws:nowrap; --c:var(--text-main); --c-hover:var(--primary); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.5rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" page_s="--pos:relative; --z:1; --d:inline-flex; --ai:center; --g:.45rem; --p:.5rem .8rem; --size:.85rem; --ws:nowrap; --c:var(--text-main); --c-hover:var(--primary); --c-on:var(--primary); --oe-focus:2px solid var(--primary); --oo:-3px; --radius:.6rem; --tn:color var(--dur-1) var(--ease-out); text-decoration:none;" pill_s="--pos:absolute; --top:.35rem; --bottom:.35rem; --left:0; --w:0; --op:0; --radius:.6rem; --bg:var(--background); --boxs:0 6px 16px rgba(0, 0, 0, .08); --bb:2px solid var(--primary); --tn:left var(--dur-2) var(--ease-spring), width var(--dur-2) var(--ease-spring), opacity var(--dur-1) var(--ease-out); --pe:none;" %}
+<nav data-tiers aria-label="Main" style="--d:grid; --g:.5rem; --minw:0;">
   <div data-tiers-groups style="--pos:relative; --d:flex; --g:.25rem; --of:auto;">
     {% for label, members in groups %}
     <a href="{{ members.0.url }}" data-group="{{ forloop.counter0 }}"{% if label == current_group %} aria-current="true"{% endif %} style="{{ group_s }}">{{ label }}<em style="--fs:normal; --size:.7rem; --p:.05rem .45rem; --radius:999px; --bg:var(--primary-tint); --c:var(--primary);">{{ members|length }}</em></a>
     {% endfor %}
-    <span data-tiers-bar aria-hidden="true" style="--pos:absolute; --bottom:-1px; --left:0; --w:0; --h:2px; --radius:2px; --bg:var(--primary); --tn:left var(--dur-2) var(--ease-spring), width var(--dur-2) var(--ease-spring);"></span>
+    <span data-tiers-bar aria-hidden="true" style="--pos:absolute; --bottom:-1px; --left:0; --w:0; --h:2px; --radius:2px; --bg:var(--primary); --tn:left var(--dur-2) var(--ease-spring), width var(--dur-2) var(--ease-spring); --pe:none;"></span>
   </div>
-  <div data-tiers-pages style="--pos:relative; --bg:var(--primary-tint); --radius:.75rem;">
-    <span data-tiers-pill aria-hidden="true" style="--pos:absolute; --top:.35rem; --bottom:.35rem; --left:0; --w:0; --op:0; --radius:.6rem; --bg:var(--background); --boxs:0 6px 16px rgba(0, 0, 0, .08); --bb:2px solid var(--primary); --tn:left var(--dur-2) var(--ease-spring), width var(--dur-2) var(--ease-spring), opacity var(--dur-1) var(--ease-out); --pe:none;"></span>
+  <div data-tiers-pages style="--minw:0; --bg:var(--primary-tint); --radius:.75rem;">
     {% for label, members in groups %}
     <div data-row="{{ forloop.counter0 }}"{% if label != current_group %} hidden{% endif %}>
-      <div style="--d:flex; --g:.25rem; --p:.35rem .5rem; --of:auto;">
+      <div style="--pos:relative; --d:flex; --g:.25rem; --p:.35rem .5rem; --of:auto;">
+        <span data-tiers-pill aria-hidden="true" style="{{ pill_s }}"></span>
         {% for item in members %}
         <a href="{{ item.url }}" data-swap-target="main"{% if item.current %}{% if tail %} data-on{% else %} aria-current="page"{% endif %}{% endif %} style="{{ page_s }}">{% nav_icon item %}<span>{{ item.label }}</span></a>
         {% endfor %}

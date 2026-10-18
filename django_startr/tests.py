@@ -972,6 +972,37 @@ class NavRenderTest(unittest.TestCase):
         self.assertIn("data-tiers", context["startr_nav_html"]("tiers"))
         self.assertTrue(any(item["current"] for item in context["startr_nav"]))
 
+    def test_the_tiers_fit_a_phone(self):
+        """A grid item will not shrink below its content, so a row of page links
+        wider than the screen widened the nav, the header and the page, and
+        pushed #user-tools off screen. --minw:0 on the nav and the pages box lets
+        the row scroll instead. The pill sits inside the scrolling row (one per
+        row), so it scrolls and clips with the links; the bar is inert."""
+        html = self.nav.render_nav(self._request(), "tiers")
+        self.assertIn('<nav data-tiers aria-label="Main" style="--d:grid; --g:.5rem; --minw:0;">', html)
+        self.assertIn('<div data-tiers-pages style="--minw:0;', html)
+        self.assertRegex(html, r'data-tiers-bar[^>]*--pe:none')
+        rows = html.split('<div data-row=')[1:]
+        self.assertTrue(rows)
+        for row in rows:
+            scroller = row.split("<a ", 1)[0]
+            self.assertIn("--pos:relative", scroller)
+            self.assertIn("--of:auto", scroller)
+            self.assertIn("data-tiers-pill", scroller)
+        self.assertEqual(html.count("data-tiers-pill"), len(rows))
+
+    def test_the_tiers_script_places_without_a_glide_and_shows_the_current_item(self):
+        """The kit gives a --tn transition !important, which a plain inline
+        `transition = "none"` loses to, so the suppression is inline !important.
+        The pill scrolls with its row, so its left is the link's offsetLeft."""
+        from pathlib import Path
+        js = (Path(__file__).parent / "static" / "django_startr" / "nav-tiers.js").read_text()
+        self.assertIn('setProperty("transition", "none", "important")', js)
+        self.assertNotIn(".style.transition =", js)
+        self.assertNotIn("scrollLeft)", js.split("const fit", 1)[1].split("const reveal", 1)[0])
+        self.assertIn("const reveal", js)
+        self.assertIn("revealCurrent()", js.split("const follow", 1)[1].split("groups.forEach", 1)[0])
+
 
 @unittest.skipUnless(STANDALONE, "not this package's own settings; run make test here")
 class AdminSkinTest(unittest.TestCase):
