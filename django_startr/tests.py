@@ -416,7 +416,7 @@ class AdminBrandTest(unittest.TestCase):
         self.assertEqual((site.site_header, site.site_title), ("Startr Admin", "Startr Admin"))
 
     def test_a_title_the_project_set_is_kept(self):
-        """A subclass attribute and an instance attribute both win, as in Tony's our_site."""
+        """A subclass attribute and an instance attribute both win, as in the frontend-ux path's our_site."""
         from django.contrib.admin import AdminSite
         from .apps import brand_admin
 

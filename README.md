@@ -18,9 +18,9 @@ Choose one of these installation methods:
 # Using pip
 pip install django-startr
 
-# Using git submodule (recommended for customization)
-git submodule add https://github.com/Startr/STARTR-django-code.git our_submodules/STARTR-django-code
-ln -s our_submodules/STARTR-django-code/django_startr django_startr
+# Using git subtree (recommended for customization)
+git subtree add --prefix=our_subtrees/STARTR-django-code https://github.com/Startr/STARTR-django-code.git master --squash
+ln -s our_subtrees/STARTR-django-code/django_startr django_startr
 ```
 
 Add to your `settings.py`:
@@ -373,9 +373,9 @@ myproject/
 ├── apps/                      # Your Django apps
 │   ├── store/
 │   └── inventory/
-├── our_submodules/            # Git submodules
+├── our_subtrees/              # Git subtrees
 │   └── STARTR-django-code/
-├── django_startr -> our_submodules/STARTR-django-code/django_startr
+├── django_startr -> our_subtrees/STARTR-django-code/django_startr
 ├── templates/                 # Project-wide templates
 │   └── base.html
 └── manage.py

@@ -31,7 +31,7 @@ Migrating from DTL meta-templates to Jinja2. Plan and rationale in
   - [ ] Base shell: header mark, footer credit, colours as startr.style tokens on `:root`, light and dark
   - [x] Colour tokens live upstream in startr.style (1.4.x ships `--primary-tint`, `--good-bg`, `--warn-bg`, `--bad-bg`, `--font-sans`, `--font-mono`); the package maps, never defines (decided 2026-10-17)
   - [ ] Block contract unchanged (`title` + `content`); consumers only gain blocks
-  - [ ] Gold test: Trellis via its subtree (`make startr_pull`); then the submodule consumers `AnatoliHS/Django3.0` (clones `Tony/Django3.0`, `WEB-Tony-Django`) and the `Startr/WEB-Django` template
+  - [ ] Gold test: Trellis via its subtree (`make startr_pull`); then the submodule consumers `AnatoliHS/Django3.0` (and its frontend-ux path clones) and the `Startr/WEB-Django` template
   - [ ] A generator test asserts the mark and the brand title in the base template
 
 - [ ] **Git setup** (Alexander — this session never writes to git)
